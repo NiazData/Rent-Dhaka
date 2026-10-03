@@ -1,7 +1,17 @@
+import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { AppRoutes } from "./AppRoutes";
+
+vi.mock("react-leaflet", () => ({
+  MapContainer: ({ children }: { children: ReactNode }) => (
+    <div data-testid="map-container">{children}</div>
+  ),
+  TileLayer: () => <div data-testid="tile-layer" />,
+  Marker: ({ children }: { children?: ReactNode }) => <div data-testid="marker">{children}</div>,
+  Popup: ({ children }: { children: ReactNode }) => <div data-testid="popup">{children}</div>,
+}));
 
 function renderAt(path: string) {
   render(
@@ -27,8 +37,10 @@ describe("AppRoutes", () => {
   });
 
   it("renders the listing detail page at /listings/:slug", () => {
-    renderAt("/listings/some-slug");
-    expect(screen.getByRole("heading", { name: /listing detail/i })).toBeInTheDocument();
+    renderAt("/listings/gulshan-2-modern-apartment");
+    expect(
+      screen.getByRole("heading", { name: /modern 3-bedroom apartment in gulshan 2/i })
+    ).toBeInTheDocument();
   });
 
   it("renders the application page at /apply/:slug", () => {
