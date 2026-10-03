@@ -96,8 +96,7 @@ Create `package.json`:
     "lucide-react": "^0.447.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.1",
-    "@radix-ui/react-progress": "^1.1.0",
-    "@radix-ui/react-label": "^2.1.0"
+    "@radix-ui/react-progress": "^1.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.9",
