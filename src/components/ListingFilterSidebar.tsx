@@ -36,7 +36,7 @@ export function ListingFilterSidebar({ filters, onChange }: ListingFilterSidebar
         <Input
           id="filter-min-rent"
           type="number"
-          defaultValue={filters.minRentBDT ?? ""}
+          value={filters.minRentBDT ?? ""}
           onChange={(e) =>
             update("minRentBDT", e.target.value ? Number(e.target.value) : undefined)
           }
@@ -47,7 +47,7 @@ export function ListingFilterSidebar({ filters, onChange }: ListingFilterSidebar
         <Input
           id="filter-max-rent"
           type="number"
-          defaultValue={filters.maxRentBDT ?? ""}
+          value={filters.maxRentBDT ?? ""}
           onChange={(e) =>
             update("maxRentBDT", e.target.value ? Number(e.target.value) : undefined)
           }
@@ -57,7 +57,7 @@ export function ListingFilterSidebar({ filters, onChange }: ListingFilterSidebar
         <Label htmlFor="filter-area">Area</Label>
         <Input
           id="filter-area"
-          defaultValue={filters.area ?? ""}
+          value={filters.area ?? ""}
           onChange={(e) => update("area", e.target.value || undefined)}
         />
       </div>
