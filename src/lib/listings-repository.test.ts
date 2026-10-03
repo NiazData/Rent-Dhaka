@@ -108,4 +108,9 @@ describe("parseListingFiltersFromSearchParams", () => {
   it("returns an empty object for empty search params", () => {
     expect(parseListingFiltersFromSearchParams(new URLSearchParams())).toEqual({});
   });
+
+  it("omits invalid propertyType values", () => {
+    const params = new URLSearchParams("propertyType=mansion");
+    expect(parseListingFiltersFromSearchParams(params)).toEqual({});
+  });
 });

@@ -1,6 +1,8 @@
 import { listings } from "../data/listings";
 import type { Listing, ListingFilters, PropertyType } from "../types";
 
+const VALID_PROPERTY_TYPES: PropertyType[] = ["apartment", "single-family", "condo", "townhome"];
+
 export function getListings(filters: ListingFilters = {}): Listing[] {
   return listings.filter((listing) => {
     if (filters.minRentBDT !== undefined && listing.rentBDT < filters.minRentBDT) return false;
@@ -45,7 +47,9 @@ export function parseListingFiltersFromSearchParams(params: URLSearchParams): Li
   if (area !== null) filters.area = area;
   if (minBeds !== null) filters.minBeds = Number(minBeds);
   if (minBaths !== null) filters.minBaths = Number(minBaths);
-  if (propertyType !== null) filters.propertyType = propertyType as PropertyType;
+  if (propertyType !== null && VALID_PROPERTY_TYPES.includes(propertyType as PropertyType)) {
+    filters.propertyType = propertyType as PropertyType;
+  }
   if (petsAllowed !== null) filters.petsAllowed = petsAllowed === "true";
   if (availableBy !== null) filters.availableBy = availableBy;
 
