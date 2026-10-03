@@ -5,6 +5,10 @@ import App from "./App";
 describe("App", () => {
   it("renders the home page by default", () => {
     render(<App />);
-    expect(screen.getByRole("heading", { name: /home/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /better properties\. better management\. better living\./i,
+      })
+    ).toBeInTheDocument();
   });
 });

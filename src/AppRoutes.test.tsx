@@ -14,7 +14,11 @@ function renderAt(path: string) {
 describe("AppRoutes", () => {
   it("renders the home page at /", () => {
     renderAt("/");
-    expect(screen.getByRole("heading", { name: /home/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /better properties\. better management\. better living\./i,
+      })
+    ).toBeInTheDocument();
   });
 
   it("renders the listings page at /listings", () => {
