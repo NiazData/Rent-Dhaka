@@ -1,5 +1,12 @@
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./AppRoutes";
+
 function App() {
-  return <div>Rent Dhaka</div>;
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 }
 
 export default App;
