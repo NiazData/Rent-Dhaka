@@ -1,8 +1,18 @@
+import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import ListingsPage from "./ListingsPage";
+
+vi.mock("react-leaflet", () => ({
+  MapContainer: ({ children }: { children: ReactNode }) => (
+    <div data-testid="map-container">{children}</div>
+  ),
+  TileLayer: () => <div data-testid="tile-layer" />,
+  Marker: ({ children }: { children?: ReactNode }) => <div data-testid="marker">{children}</div>,
+  Popup: ({ children }: { children: ReactNode }) => <div data-testid="popup">{children}</div>,
+}));
 
 describe("ListingsPage", () => {
   it("renders only listings matching the filters in the URL", () => {
@@ -38,5 +48,19 @@ describe("ListingsPage", () => {
 
     expect(screen.getByText("Executive 3-Bedroom Condo in Banani")).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(1);
+  });
+
+  it("toggles to map view and renders a marker per listing", async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter initialEntries={["/listings?propertyType=condo"]}>
+        <ListingsPage />
+      </MemoryRouter>
+    );
+
+    await user.click(screen.getByRole("button", { name: /^map$/i }));
+
+    expect(screen.getByTestId("map-container")).toBeInTheDocument();
+    expect(screen.getAllByTestId("marker")).toHaveLength(2);
   });
 });
