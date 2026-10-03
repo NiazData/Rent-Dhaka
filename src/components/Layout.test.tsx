@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { Layout } from "./Layout";
@@ -19,10 +19,13 @@ describe("Layout", () => {
       "href",
       "#main-content"
     );
-    expect(screen.getByRole("link", { name: /^home$/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /listings/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /contact/i })).toBeInTheDocument();
+
+    const mainNav = within(screen.getByRole("navigation", { name: /main/i }));
+    expect(mainNav.getByRole("link", { name: /^home$/i })).toBeInTheDocument();
+    expect(mainNav.getByRole("link", { name: /listings/i })).toBeInTheDocument();
+    expect(mainNav.getByRole("link", { name: /about/i })).toBeInTheDocument();
+    expect(mainNav.getByRole("link", { name: /contact/i })).toBeInTheDocument();
+
     expect(screen.getByText("Page Content")).toBeInTheDocument();
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
   });

@@ -10,8 +10,8 @@ export function Footer() {
           <Link to="/privacy" className="hover:text-accent-600">
             Privacy Policy
           </Link>
-          <Link to="/support" className="hover:text-accent-600">
-            Get Help
+          <Link to="/contact" className="hover:text-accent-600">
+            Contact Us
           </Link>
         </nav>
       </div>
