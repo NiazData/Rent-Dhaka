@@ -45,7 +45,7 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
       <img
         src={photos[index]}
         alt={`${alt} photo ${index + 1} of ${photos.length}`}
-        className="h-96 w-full rounded-lg object-cover"
+        className="h-96 w-full rounded-lg bg-stone-100 object-contain"
       />
       {photos.length > 1 && (
         <>

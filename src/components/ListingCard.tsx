@@ -9,7 +9,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
       <img
         src={listing.photos[0]}
         alt={listing.title}
-        className="h-48 w-full rounded-t-lg object-cover"
+        className="h-48 w-full rounded-t-lg bg-stone-100 object-contain"
       />
       <CardContent>
         <h3 className="text-base font-semibold text-stone-900">{listing.title}</h3>
