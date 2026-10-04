@@ -213,7 +213,7 @@ export const listings: Listing[] = [
     id: "l9",
     slug: "mohammadpur-apartment-for-sale",
     title: "3-Bedroom Apartment for Sale in Mohammadpur",
-    address: "Road 4, Mohammadpur, Dhaka 1207",
+    address: "Mohammadpur, Dhaka 1207",
     area: "Mohammadpur",
     rentBDT: 4400000,
     depositBDT: 0,
