@@ -224,7 +224,7 @@ export const listings: Listing[] = [
     propertyType: "apartment",
     listingPurpose: "sale",
     petPolicy: "N/A",
-    parking: "1 covered space",
+    parking: "1 covered space for an additional ৳300,000 payment",
     amenities: ["Lift", "Generator backup"],
     utilitiesInfo: "Separate utility meters",
     leaseTerms: "Freehold, ready for registration",

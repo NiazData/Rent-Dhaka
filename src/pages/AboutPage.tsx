@@ -4,6 +4,11 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="text-3xl font-bold text-stone-900">About This Company</h1>
+      <p className="mt-3 max-w-2xl text-stone-600">
+        The Company has helped find verified homes across Dhaka for over 10 years, working
+        directly with landlords in Gulshan, Dhanmondi, Banani, Uttara, Mohammadpur, and beyond to
+        keep listings accurate and leases straightforward.
+      </p>
 
       <div className="mt-6 max-w-md">
         <img

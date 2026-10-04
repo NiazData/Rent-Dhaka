@@ -7,11 +7,14 @@ describe("AboutPage", () => {
     render(<AboutPage />);
 
     expect(screen.getByRole("heading", { name: /about this company/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/the company has helped find verified homes across dhaka/i)
+    ).toBeInTheDocument();
     expect(screen.getByRole("img", { name: /rent dhaka/i })).toHaveAttribute(
       "src",
       "/images/about/about.jpeg"
     );
-    expect(screen.getByText(/mohammadpur/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/mohammadpur/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/dhaka-1207/i)).toBeInTheDocument();
     expect(screen.getByText(/bangladesh/i)).toBeInTheDocument();
     expect(screen.queryByText("Shamim Hassan")).not.toBeInTheDocument();
