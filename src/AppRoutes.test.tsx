@@ -72,6 +72,23 @@ describe("AppRoutes", () => {
     expect(screen.getByRole("heading", { name: /privacy/i })).toBeInTheDocument();
   });
 
+  it("renders the Barakah Property Solutions coming-soon page", () => {
+    renderAt("/barakah-property-solutions");
+    expect(
+      screen.getByRole("heading", { name: /barakah property solutions/i })
+    ).toBeInTheDocument();
+  });
+
+  it("renders the BarakahAid coming-soon page", () => {
+    renderAt("/barakahaid");
+    expect(screen.getByRole("heading", { name: /barakahaid/i })).toBeInTheDocument();
+  });
+
+  it("renders the login coming-soon page", () => {
+    renderAt("/login");
+    expect(screen.getByRole("heading", { name: /login \/ sign up/i })).toBeInTheDocument();
+  });
+
   it("renders the not found page for an unknown route", () => {
     renderAt("/nonexistent");
     expect(screen.getByRole("heading", { name: /page not found/i })).toBeInTheDocument();

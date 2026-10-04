@@ -18,7 +18,7 @@ export default function PropertyTypePage() {
     );
   }
 
-  const listings = getListings({ propertyType: info.type as PropertyType });
+  const listings = getListings({ propertyType: info.type as PropertyType, listingPurpose: "rent" });
 
   return (
     <div>

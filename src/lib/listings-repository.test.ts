@@ -54,6 +54,20 @@ describe("getListings", () => {
     expect(result.length).toBeGreaterThan(0);
   });
 
+  it("filters by listing purpose", () => {
+    const forSale = getListings({ listingPurpose: "sale" });
+    expect(forSale.every((l) => l.listingPurpose === "sale")).toBe(true);
+    expect(forSale.length).toBeGreaterThan(0);
+
+    const byBuilder = getListings({ listingPurpose: "builder" });
+    expect(byBuilder.every((l) => l.listingPurpose === "builder")).toBe(true);
+    expect(byBuilder.length).toBeGreaterThan(0);
+
+    const forRent = getListings({ listingPurpose: "rent" });
+    expect(forRent.every((l) => l.listingPurpose === "rent")).toBe(true);
+    expect(forRent.length).toBeGreaterThan(0);
+  });
+
   it("filters out listings that explicitly disallow pets when petsAllowed is true", () => {
     const result = getListings({ petsAllowed: true });
     expect(result.every((l) => !l.petPolicy.toLowerCase().includes("no pets"))).toBe(true);
@@ -122,6 +136,16 @@ describe("parseListingFiltersFromSearchParams", () => {
 
   it("omits invalid propertyType values", () => {
     const params = new URLSearchParams("propertyType=mansion");
+    expect(parseListingFiltersFromSearchParams(params)).toEqual({});
+  });
+
+  it("parses a valid listingPurpose value", () => {
+    const params = new URLSearchParams("listingPurpose=sale");
+    expect(parseListingFiltersFromSearchParams(params)).toEqual({ listingPurpose: "sale" });
+  });
+
+  it("omits invalid listingPurpose values", () => {
+    const params = new URLSearchParams("listingPurpose=lease-to-own");
     expect(parseListingFiltersFromSearchParams(params)).toEqual({});
   });
 });

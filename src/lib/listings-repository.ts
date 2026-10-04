@@ -1,7 +1,8 @@
 import { listings } from "../data/listings";
-import type { Listing, ListingFilters, PropertyType } from "../types";
+import type { Listing, ListingFilters, ListingPurpose, PropertyType } from "../types";
 
 const VALID_PROPERTY_TYPES: PropertyType[] = ["apartment", "single-family", "condo", "townhome"];
+const VALID_LISTING_PURPOSES: ListingPurpose[] = ["rent", "sale", "builder"];
 
 export function getListings(filters: ListingFilters = {}): Listing[] {
   return listings.filter((listing) => {
@@ -11,6 +12,7 @@ export function getListings(filters: ListingFilters = {}): Listing[] {
     if (filters.minBeds !== undefined && listing.beds < filters.minBeds) return false;
     if (filters.minBaths !== undefined && listing.baths < filters.minBaths) return false;
     if (filters.propertyType && listing.propertyType !== filters.propertyType) return false;
+    if (filters.listingPurpose && listing.listingPurpose !== filters.listingPurpose) return false;
     if (filters.petsAllowed && listing.petPolicy.toLowerCase().includes("no pets")) return false;
     if (
       filters.availableBy &&
@@ -39,6 +41,7 @@ export function parseListingFiltersFromSearchParams(params: URLSearchParams): Li
   const minBeds = params.get("minBeds");
   const minBaths = params.get("minBaths");
   const propertyType = params.get("propertyType");
+  const listingPurpose = params.get("listingPurpose");
   const petsAllowed = params.get("petsAllowed");
   const availableBy = params.get("availableBy");
 
@@ -49,6 +52,9 @@ export function parseListingFiltersFromSearchParams(params: URLSearchParams): Li
   if (minBaths !== null) filters.minBaths = Number(minBaths);
   if (propertyType !== null && VALID_PROPERTY_TYPES.includes(propertyType as PropertyType)) {
     filters.propertyType = propertyType as PropertyType;
+  }
+  if (listingPurpose !== null && VALID_LISTING_PURPOSES.includes(listingPurpose as ListingPurpose)) {
+    filters.listingPurpose = listingPurpose as ListingPurpose;
   }
   if (petsAllowed !== null) filters.petsAllowed = petsAllowed === "true";
   if (availableBy !== null) filters.availableBy = availableBy;

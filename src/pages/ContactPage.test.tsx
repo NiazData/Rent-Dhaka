@@ -18,11 +18,11 @@ describe("ContactPage", () => {
 
     expect(screen.getByRole("link", { name: /call/i })).toHaveAttribute(
       "href",
-      "tel:+8801711000000"
+      "tel:+8801970249432"
     );
     expect(screen.getByRole("link", { name: /whatsapp/i })).toHaveAttribute(
       "href",
-      "https://wa.me/8801711000000"
+      "https://wa.me/8801970249432"
     );
     expect(screen.getByRole("link", { name: /hello@rentdhaka\.com/i })).toHaveAttribute(
       "href",

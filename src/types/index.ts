@@ -1,5 +1,7 @@
 export type PropertyType = "apartment" | "single-family" | "condo" | "townhome";
 
+export type ListingPurpose = "rent" | "sale" | "builder";
+
 export interface Listing {
   id: string;
   slug: string;
@@ -13,6 +15,7 @@ export interface Listing {
   sqft: number;
   availableFrom: string;
   propertyType: PropertyType;
+  listingPurpose: ListingPurpose;
   petPolicy: string;
   parking: string;
   amenities: string[];
@@ -31,14 +34,6 @@ export interface Testimonial {
   rating: number;
 }
 
-export interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  photo: string;
-  bio: string;
-}
-
 export interface PropertyTypeInfo {
   type: PropertyType;
   title: string;
@@ -53,6 +48,7 @@ export interface ListingFilters {
   minBeds?: number;
   minBaths?: number;
   propertyType?: PropertyType;
+  listingPurpose?: ListingPurpose;
   petsAllowed?: boolean;
   availableBy?: string;
 }

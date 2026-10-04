@@ -1,6 +1,6 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
-const OFFICE_POSITION: [number, number] = [23.7925, 90.4078];
+const OFFICE_POSITION: [number, number] = [23.7658, 90.361];
 
 export function OfficeMap() {
   return (
@@ -10,7 +10,7 @@ export function OfficeMap() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <Marker position={OFFICE_POSITION}>
-        <Popup>Rent Dhaka Office — House 14, Road 103, Gulshan 2</Popup>
+        <Popup>Rent Dhaka Office — Road 4, Mohammadpur</Popup>
       </Marker>
     </MapContainer>
   );

@@ -33,7 +33,10 @@ export default function ListingDetailPage() {
       </div>
 
       <div className="mt-6 flex flex-wrap gap-6 border-y border-stone-200 py-4 text-stone-700">
-        <p className="text-xl font-bold text-accent-700">{formatBDT(listing.rentBDT)}/mo</p>
+        <p className="text-xl font-bold text-accent-700">
+          {formatBDT(listing.rentBDT)}
+          {listing.listingPurpose === "rent" ? "/mo" : ""}
+        </p>
         <p>{listing.beds} beds</p>
         <p>{listing.baths} baths</p>
         <p>{listing.sqft} sqft</p>

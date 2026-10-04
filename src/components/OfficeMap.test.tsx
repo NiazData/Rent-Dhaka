@@ -17,6 +17,6 @@ describe("OfficeMap", () => {
     render(<OfficeMap />);
     expect(screen.getByTestId("map-container")).toBeInTheDocument();
     expect(screen.getAllByTestId("marker")).toHaveLength(1);
-    expect(screen.getByText(/gulshan 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/mohammadpur/i)).toBeInTheDocument();
   });
 });

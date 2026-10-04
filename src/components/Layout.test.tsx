@@ -20,11 +20,36 @@ describe("Layout", () => {
       "#main-content"
     );
 
-    const mainNav = within(screen.getByRole("navigation", { name: /main/i }));
-    expect(mainNav.getByRole("link", { name: /^home$/i })).toBeInTheDocument();
-    expect(mainNav.getByRole("link", { name: /listings/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /^rent dhaka$/i })).toHaveAttribute("href", "/");
+
+    const businessNav = within(screen.getByRole("navigation", { name: /business lines/i }));
+    expect(businessNav.getByRole("link", { name: /^rent$/i })).toHaveAttribute(
+      "href",
+      "/listings?listingPurpose=rent"
+    );
+    expect(businessNav.getByRole("link", { name: /^sell$/i })).toHaveAttribute(
+      "href",
+      "/listings?listingPurpose=sale"
+    );
+    expect(
+      businessNav.getByRole("link", { name: /barakah property solutions/i })
+    ).toHaveAttribute("href", "/barakah-property-solutions");
+    expect(businessNav.getByRole("link", { name: /barakahaid/i })).toHaveAttribute(
+      "href",
+      "/barakahaid"
+    );
+    expect(businessNav.getByRole("link", { name: /connect builders/i })).toHaveAttribute(
+      "href",
+      "/listings?listingPurpose=builder"
+    );
+
+    const mainNav = within(screen.getByRole("navigation", { name: /^main$/i }));
     expect(mainNav.getByRole("link", { name: /about/i })).toBeInTheDocument();
     expect(mainNav.getByRole("link", { name: /contact/i })).toBeInTheDocument();
+    expect(mainNav.getByRole("link", { name: /login \/ sign up/i })).toHaveAttribute(
+      "href",
+      "/login"
+    );
 
     expect(screen.getByText("Page Content")).toBeInTheDocument();
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();

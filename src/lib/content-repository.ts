@@ -1,14 +1,9 @@
 import { testimonials } from "../data/testimonials";
-import { teamMembers } from "../data/team";
 import { propertyTypes } from "../data/propertyTypes";
-import type { PropertyTypeInfo, TeamMember, Testimonial } from "../types";
+import type { PropertyTypeInfo, Testimonial } from "../types";
 
 export function getTestimonials(): Testimonial[] {
   return testimonials;
-}
-
-export function getTeamMembers(): TeamMember[] {
-  return teamMembers;
 }
 
 export function getAllPropertyTypes(): PropertyTypeInfo[] {

@@ -39,4 +39,9 @@ describe("listings seed data", () => {
     const types = new Set(listings.map((l) => l.propertyType));
     expect(types).toEqual(new Set(["apartment", "single-family", "condo", "townhome"]));
   });
+
+  it("covers all three listing purposes", () => {
+    const purposes = new Set(listings.map((l) => l.listingPurpose));
+    expect(purposes).toEqual(new Set(["rent", "sale", "builder"]));
+  });
 });

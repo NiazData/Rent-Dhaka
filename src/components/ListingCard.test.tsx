@@ -17,6 +17,7 @@ const sampleListing: Listing = {
   sqft: 1600,
   availableFrom: "2026-11-01",
   propertyType: "apartment",
+  listingPurpose: "rent",
   petPolicy: "Cats and small dogs allowed",
   parking: "1 covered space",
   amenities: ["Generator backup"],
@@ -42,5 +43,17 @@ describe("ListingCard", () => {
       "href",
       "/listings/gulshan-2-modern-apartment"
     );
+  });
+
+  it("renders a lump-sum price with no /mo suffix for a sale listing", () => {
+    const saleListing: Listing = { ...sampleListing, listingPurpose: "sale", rentBDT: 9500000 };
+    render(
+      <MemoryRouter>
+        <ListingCard listing={saleListing} />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText("৳95,00,000")).toBeInTheDocument();
+    expect(screen.queryByText(/৳95,00,000\/mo/)).not.toBeInTheDocument();
   });
 });

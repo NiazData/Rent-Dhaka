@@ -50,6 +50,30 @@ describe("ListingsPage", () => {
     expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(1);
   });
 
+  it("shows a purpose-specific heading and only matching listings when listingPurpose is set", () => {
+    render(
+      <MemoryRouter initialEntries={["/listings?listingPurpose=sale"]}>
+        <ListingsPage />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole("heading", { name: /properties for sale/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(3);
+  });
+
+  it("shows the ready-built-by-builders heading for listingPurpose=builder", () => {
+    render(
+      <MemoryRouter initialEntries={["/listings?listingPurpose=builder"]}>
+        <ListingsPage />
+      </MemoryRouter>
+    );
+
+    expect(
+      screen.getByRole("heading", { name: /ready-built properties by builders/i })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(3);
+  });
+
   it("toggles to map view and renders a marker per listing", async () => {
     const user = userEvent.setup();
     render(

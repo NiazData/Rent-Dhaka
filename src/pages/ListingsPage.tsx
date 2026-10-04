@@ -6,13 +6,20 @@ import { ListingFilterSidebar } from "../components/ListingFilterSidebar";
 import { ListingsMapView } from "../components/ListingsMapView";
 import { EmptyListingsState } from "../components/EmptyListingsState";
 import { Button } from "../components/ui/button";
-import type { ListingFilters } from "../types";
+import type { ListingFilters, ListingPurpose } from "../types";
+
+const PURPOSE_HEADINGS: Record<ListingPurpose, string> = {
+  rent: "Properties for Rent",
+  sale: "Properties for Sale",
+  builder: "Ready-Built Properties by Builders",
+};
 
 export default function ListingsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [view, setView] = useState<"list" | "map">("list");
   const filters = useMemo(() => parseListingFiltersFromSearchParams(searchParams), [searchParams]);
   const listings = useMemo(() => getListings(filters), [filters]);
+  const heading = filters.listingPurpose ? PURPOSE_HEADINGS[filters.listingPurpose] : "Listings";
 
   function handleFiltersChange(next: ListingFilters) {
     const params = new URLSearchParams();
@@ -25,7 +32,7 @@ export default function ListingsPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-stone-900">Listings</h1>
+        <h1 className="text-2xl font-bold text-stone-900">{heading}</h1>
         <div role="group" aria-label="View toggle" className="flex gap-2">
           <Button
             variant={view === "list" ? "primary" : "outline"}

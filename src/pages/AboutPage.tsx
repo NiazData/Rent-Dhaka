@@ -1,4 +1,4 @@
-import { TeamGrid } from "../components/TeamGrid";
+import { OwnerProfile } from "../components/OwnerProfile";
 import { TestimonialsList } from "../components/TestimonialsList";
 
 export default function AboutPage() {
@@ -12,9 +12,9 @@ export default function AboutPage() {
       </p>
 
       <section className="mt-10">
-        <h2 className="text-xl font-semibold text-stone-900">Our Team</h2>
+        <h2 className="text-xl font-semibold text-stone-900">Owner</h2>
         <div className="mt-6">
-          <TeamGrid />
+          <OwnerProfile />
         </div>
       </section>
 
