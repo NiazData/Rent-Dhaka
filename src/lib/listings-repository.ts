@@ -7,7 +7,7 @@ export function getListings(filters: ListingFilters = {}): Listing[] {
   return listings.filter((listing) => {
     if (filters.minRentBDT !== undefined && listing.rentBDT < filters.minRentBDT) return false;
     if (filters.maxRentBDT !== undefined && listing.rentBDT > filters.maxRentBDT) return false;
-    if (filters.area && listing.area.toLowerCase() !== filters.area.toLowerCase()) return false;
+    if (filters.area && !listing.area.toLowerCase().includes(filters.area.toLowerCase())) return false;
     if (filters.minBeds !== undefined && listing.beds < filters.minBeds) return false;
     if (filters.minBaths !== undefined && listing.baths < filters.minBaths) return false;
     if (filters.propertyType && listing.propertyType !== filters.propertyType) return false;

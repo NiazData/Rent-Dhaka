@@ -31,6 +31,17 @@ describe("getListings", () => {
     expect(result.every((l) => l.area.toLowerCase() === "dhanmondi")).toBe(true);
   });
 
+  it("filters by area using a partial match, so 'Gulshan' finds Gulshan 1 and Gulshan 2", () => {
+    const result = getListings({ area: "Gulshan" });
+    expect(result).toHaveLength(2);
+    expect(result.map((l) => l.area).sort()).toEqual(["Gulshan 1", "Gulshan 2"]);
+  });
+
+  it("still narrows to a specific sub-area when one is given", () => {
+    const result = getListings({ area: "gulshan 2" });
+    expect(result.map((l) => l.area)).toEqual(["Gulshan 2"]);
+  });
+
   it("filters by minimum beds", () => {
     const result = getListings({ minBeds: 4 });
     expect(result.every((l) => l.beds >= 4)).toBe(true);

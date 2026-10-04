@@ -48,11 +48,22 @@ describe("ListingDetailPage", () => {
     expect(screen.getByRole("heading", { name: /listing not found/i })).toBeInTheDocument();
   });
 
-  it("opens the schedule tour modal when its button is clicked", async () => {
+  it("opens the schedule tour modal from the desktop button", async () => {
     const user = userEvent.setup();
     renderAt("/listings/gulshan-2-modern-apartment");
 
-    await user.click(screen.getByRole("button", { name: /schedule tour/i }));
+    // [0] is the desktop action row, [1] is the mobile sticky bar (rendered after it).
+    const buttons = screen.getAllByRole("button", { name: /schedule tour/i });
+    expect(buttons).toHaveLength(2);
+    await user.click(buttons[0]);
+    expect(screen.getByText("Schedule a Tour")).toBeInTheDocument();
+  });
+
+  it("opens the schedule tour modal from the mobile sticky bar button", async () => {
+    const user = userEvent.setup();
+    renderAt("/listings/gulshan-2-modern-apartment");
+
+    await user.click(screen.getAllByRole("button", { name: /schedule tour/i })[1]);
     expect(screen.getByText("Schedule a Tour")).toBeInTheDocument();
   });
 });

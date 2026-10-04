@@ -146,7 +146,7 @@ export const listings: Listing[] = [
     leaseTerms: "12-month lease",
     photos: [
       "https://images.unsplash.com/photo-1600121848594-d8644e57abab",
-      "https://images.unsplash.com/photo-1600566752734-2a0cd66aabac",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
     ],
     lat: 23.8015,
     lng: 90.3656,
@@ -171,7 +171,7 @@ export const listings: Listing[] = [
     leaseTerms: "12-month lease, negotiable",
     photos: [
       "https://images.unsplash.com/photo-1600585154526-990dced4db0d",
-      "https://images.unsplash.com/photo-1600566752355-35792bedcfeb",
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb",
     ],
     lat: 23.7806,
     lng: 90.4152,
@@ -195,8 +195,8 @@ export const listings: Listing[] = [
     utilitiesInfo: "Tenant pays all utilities",
     leaseTerms: "12-month lease, 3 months advance",
     photos: [
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a8",
-      "https://images.unsplash.com/photo-1600047509807-ba7baa0f8c19",
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858",
     ],
     lat: 23.7383,
     lng: 90.3858,

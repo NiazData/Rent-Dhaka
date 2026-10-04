@@ -76,7 +76,7 @@ export default function ListingDetailPage() {
         </Button>
       </div>
 
-      <StickyApplyBar listingSlug={listing.slug} />
+      <StickyApplyBar listingSlug={listing.slug} onScheduleTour={() => setTourModalOpen(true)} />
       <ScheduleTourModal
         listingSlug={listing.slug}
         open={tourModalOpen}
