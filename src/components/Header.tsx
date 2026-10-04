@@ -4,27 +4,27 @@ const BUSINESS_LINKS = [
   {
     to: "/listings?listingPurpose=rent",
     label: "Rent",
-    className: "bg-emerald-600 hover:bg-emerald-700",
+    className: "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100",
   },
   {
     to: "/listings?listingPurpose=sale",
     label: "Sell",
-    className: "bg-blue-600 hover:bg-blue-700",
+    className: "border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100",
   },
   {
     to: "/barakah-property-solutions",
     label: "Barakah Property Management",
-    className: "bg-amber-600 hover:bg-amber-700",
+    className: "border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100",
   },
   {
     to: "/barakahaid",
     label: "BarakahAid",
-    className: "bg-rose-600 hover:bg-rose-700",
+    className: "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100",
   },
   {
     to: "/listings?listingPurpose=builder",
     label: "Connect Builders",
-    className: "bg-violet-600 hover:bg-violet-700",
+    className: "border-violet-200 bg-violet-50 text-violet-700 hover:bg-violet-100",
   },
 ];
 
@@ -40,7 +40,7 @@ export function Header() {
             <Link
               key={link.label}
               to={link.to}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium text-white ${link.className}`}
+              className={`rounded-md border px-3 py-1.5 text-sm font-medium ${link.className}`}
             >
               {link.label}
             </Link>
