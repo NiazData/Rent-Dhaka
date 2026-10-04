@@ -44,8 +44,10 @@ describe("AppRoutes", () => {
   });
 
   it("renders the application page at /apply/:slug", () => {
-    renderAt("/apply/some-slug");
-    expect(screen.getByRole("heading", { name: /application/i })).toBeInTheDocument();
+    renderAt("/apply/gulshan-2-modern-apartment");
+    expect(
+      screen.getByRole("heading", { name: /apply for modern 3-bedroom apartment in gulshan 2/i })
+    ).toBeInTheDocument();
   });
 
   it("renders the property type page at /property-types/:type", () => {

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { submitTourRequest } from "./netlify-forms";
+import { submitApplication, submitTourRequest, type ApplicationSubmission } from "./netlify-forms";
 
 describe("submitTourRequest", () => {
   beforeEach(() => {
@@ -40,5 +40,46 @@ describe("submitTourRequest", () => {
         message: "",
       })
     ).rejects.toThrow("Tour request submission failed");
+  });
+});
+
+describe("submitApplication", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  function sampleSubmission(): ApplicationSubmission {
+    return {
+      listingSlug: "gulshan-2-modern-apartment",
+      personal: { fullName: "Rafiq Ahmed", email: "rafiq@example.com", phone: "01711000000" },
+      employment: { employer: "ACME Corp", position: "Engineer", monthlyIncomeBDT: 80000 },
+      history: { previousAddress: "House 1, Road 2, Dhanmondi", previousLandlordContact: "" },
+      documents: {
+        nidFile: new File(["id"], "nid.png", { type: "image/png" }),
+        incomeProofFile: null,
+      },
+    };
+  }
+
+  it("POSTs multipart form data including the form-name field and the NID file", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await submitApplication(sampleSubmission());
+
+    expect(fetchMock).toHaveBeenCalledWith("/", expect.objectContaining({ method: "POST" }));
+    const body = fetchMock.mock.calls[0][1].body as FormData;
+    expect(body.get("form-name")).toBe("rental-application");
+    expect(body.get("fullName")).toBe("Rafiq Ahmed");
+    expect(body.get("monthlyIncomeBDT")).toBe("80000");
+    expect((body.get("nidFile") as File).name).toBe("nid.png");
+  });
+
+  it("throws when the response is not ok", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
+
+    await expect(submitApplication(sampleSubmission())).rejects.toThrow(
+      "Application submission failed"
+    );
   });
 });
