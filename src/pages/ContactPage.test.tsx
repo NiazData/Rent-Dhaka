@@ -22,12 +22,15 @@ describe("ContactPage", () => {
     );
     expect(screen.getByRole("link", { name: /whatsapp/i })).toHaveAttribute(
       "href",
-      "https://wa.me/8801970249432"
+      "https://wa.me/15305913113"
     );
-    expect(screen.getByRole("link", { name: /hello@rentdhaka\.com/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /shamim2005@gmail\.com/i })).toHaveAttribute(
       "href",
-      "mailto:hello@rentdhaka.com"
+      "mailto:Shamim2005@gmail.com"
     );
+    expect(screen.getAllByText(/mohammadpur/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/dhaka-1207/i)).toBeInTheDocument();
+    expect(screen.getByText(/bangladesh/i)).toBeInTheDocument();
     expect(screen.getByTestId("map-container")).toBeInTheDocument();
   });
 });

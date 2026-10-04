@@ -30,8 +30,8 @@ export function AppRoutes() {
           path="barakah-property-solutions"
           element={
             <ComingSoonPage
-              title="Barakah Property Solutions"
-              message="A dedicated property solutions service is launching soon."
+              title="Barakah Property Management"
+              message="A dedicated property management service is launching soon."
             />
           }
         />

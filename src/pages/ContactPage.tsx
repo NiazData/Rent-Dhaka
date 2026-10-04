@@ -2,8 +2,9 @@ import { Mail, MessageCircle, Phone } from "lucide-react";
 import { OfficeMap } from "../components/OfficeMap";
 
 const PHONE_NUMBER = "+8801970249432";
-const WHATSAPP_NUMBER = "8801970249432";
-const EMAIL = "hello@rentdhaka.com";
+const WHATSAPP_DISPLAY = "+1 530-591-3113";
+const WHATSAPP_NUMBER = "15305913113";
+const EMAIL = "Shamim2005@gmail.com";
 
 export default function ContactPage() {
   return (
@@ -24,7 +25,7 @@ export default function ContactPage() {
           href={`https://wa.me/${WHATSAPP_NUMBER}`}
           className="flex items-center gap-2 rounded-md bg-stone-100 px-4 py-2 text-sm font-medium text-stone-900"
         >
-          <MessageCircle className="h-4 w-4" /> WhatsApp Us
+          <MessageCircle className="h-4 w-4" /> WhatsApp {WHATSAPP_DISPLAY}
         </a>
         <a
           href={`mailto:${EMAIL}`}
@@ -36,7 +37,13 @@ export default function ContactPage() {
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold text-stone-900">Our Office</h2>
-        <p className="mt-2 text-stone-600">Road 4, Mohammadpur, Dhaka 1207</p>
+        <p className="mt-2 text-stone-600">
+          Mohammadpur
+          <br />
+          Dhaka-1207
+          <br />
+          Bangladesh
+        </p>
         <div className="mt-4">
           <OfficeMap />
         </div>

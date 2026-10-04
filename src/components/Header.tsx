@@ -1,40 +1,55 @@
 import { Link } from "react-router-dom";
 
+const BUSINESS_LINKS = [
+  {
+    to: "/listings?listingPurpose=rent",
+    label: "Rent",
+    className: "bg-emerald-600 hover:bg-emerald-700",
+  },
+  {
+    to: "/listings?listingPurpose=sale",
+    label: "Sell",
+    className: "bg-blue-600 hover:bg-blue-700",
+  },
+  {
+    to: "/barakah-property-solutions",
+    label: "Barakah Property Management",
+    className: "bg-amber-600 hover:bg-amber-700",
+  },
+  {
+    to: "/barakahaid",
+    label: "BarakahAid",
+    className: "bg-rose-600 hover:bg-rose-700",
+  },
+  {
+    to: "/listings?listingPurpose=builder",
+    label: "Connect Builders",
+    className: "bg-violet-600 hover:bg-violet-700",
+  },
+];
+
 export function Header() {
   return (
     <header className="border-b border-stone-200 bg-white">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-4 md:flex-row md:justify-between md:gap-6">
         <nav
           aria-label="Business lines"
-          className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-stone-700 md:order-1 md:justify-start"
+          className="flex flex-wrap items-center justify-center gap-2 md:justify-start"
         >
-          <Link to="/listings?listingPurpose=rent" className="hover:text-accent-600">
-            Rent
-          </Link>
-          <Link to="/listings?listingPurpose=sale" className="hover:text-accent-600">
-            Sell
-          </Link>
-          <Link to="/barakah-property-solutions" className="hover:text-accent-600">
-            Barakah Property Solutions
-          </Link>
-          <Link to="/barakahaid" className="hover:text-accent-600">
-            BarakahAid
-          </Link>
-          <Link to="/listings?listingPurpose=builder" className="hover:text-accent-600">
-            Connect Builders
-          </Link>
+          {BUSINESS_LINKS.map((link) => (
+            <Link
+              key={link.label}
+              to={link.to}
+              className={`rounded-md px-3 py-1.5 text-sm font-medium text-white ${link.className}`}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
-
-        <Link
-          to="/"
-          className="order-first text-2xl font-extrabold tracking-wide text-accent-700 md:order-2 md:text-3xl"
-        >
-          RENT DHAKA
-        </Link>
 
         <nav
           aria-label="Main"
-          className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-stone-700 md:order-3 md:justify-end"
+          className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-stone-700"
         >
           <Link to="/about" className="hover:text-accent-600">
             About

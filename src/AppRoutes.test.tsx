@@ -91,10 +91,10 @@ describe("AppRoutes", () => {
     expect(screen.getByRole("heading", { name: /privacy/i })).toBeInTheDocument();
   });
 
-  it("renders the Barakah Property Solutions coming-soon page", () => {
+  it("renders the Barakah Property Management coming-soon page", () => {
     renderAt("/barakah-property-solutions");
     expect(
-      screen.getByRole("heading", { name: /barakah property solutions/i })
+      screen.getByRole("heading", { name: /barakah property management/i })
     ).toBeInTheDocument();
   });
 

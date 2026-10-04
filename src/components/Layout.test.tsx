@@ -20,8 +20,6 @@ describe("Layout", () => {
       "#main-content"
     );
 
-    expect(screen.getByRole("link", { name: /^rent dhaka$/i })).toHaveAttribute("href", "/");
-
     const businessNav = within(screen.getByRole("navigation", { name: /business lines/i }));
     expect(businessNav.getByRole("link", { name: /^rent$/i })).toHaveAttribute(
       "href",
@@ -32,7 +30,7 @@ describe("Layout", () => {
       "/listings?listingPurpose=sale"
     );
     expect(
-      businessNav.getByRole("link", { name: /barakah property solutions/i })
+      businessNav.getByRole("link", { name: /barakah property management/i })
     ).toHaveAttribute("href", "/barakah-property-solutions");
     expect(businessNav.getByRole("link", { name: /barakahaid/i })).toHaveAttribute(
       "href",
