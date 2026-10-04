@@ -46,6 +46,7 @@ export default function ListingsPage() {
       <div className="mt-6 flex flex-col gap-6 md:flex-row">
         <ListingFilterSidebar filters={filters} onChange={handleFiltersChange} />
         <div className="flex-1">
+          <h2 className="sr-only">Search results</h2>
           {listings.length === 0 ? (
             <EmptyListingsState />
           ) : view === "list" ? (

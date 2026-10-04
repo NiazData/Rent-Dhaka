@@ -114,6 +114,7 @@ export function ListingFilterSidebar({ filters, onChange }: ListingFilterSidebar
       <div className="flex items-center gap-2">
         <Checkbox
           id="filter-pets-allowed"
+          aria-label="Pets allowed"
           checked={filters.petsAllowed ?? false}
           onCheckedChange={(checked) => update("petsAllowed", checked === true ? true : undefined)}
         />
