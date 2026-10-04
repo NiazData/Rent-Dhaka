@@ -3,6 +3,7 @@ import { Mail, MessageCircle, Phone, User } from "lucide-react";
 import { OWNER_PHOTO_PATH, SITE_IMAGES_BUCKET, supabase } from "../lib/supabase";
 
 const PHONE_NUMBER = "+8801970249432";
+const PHONE_DISPLAY = "+88 01970249432";
 const WHATSAPP_DISPLAY = "+1 (530) 591-3113";
 const WHATSAPP_NUMBER = "15305913113";
 const EMAIL = "Shamim2005@gmail.com";
@@ -43,7 +44,7 @@ export function OwnerProfile() {
             href={`tel:${PHONE_NUMBER}`}
             className="flex items-center gap-2 text-accent-600 hover:underline"
           >
-            <Phone className="h-4 w-4" /> {PHONE_NUMBER}
+            <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
           </a>
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}`}

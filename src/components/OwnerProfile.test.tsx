@@ -24,7 +24,7 @@ describe("OwnerProfile", () => {
     expect(screen.getByText(/dhaka-1207/i)).toBeInTheDocument();
     expect(screen.getByText(/bangladesh/i)).toBeInTheDocument();
 
-    expect(screen.getByRole("link", { name: /\+8801970249432/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /\+88 01970249432/ })).toHaveAttribute(
       "href",
       "tel:+8801970249432"
     );
