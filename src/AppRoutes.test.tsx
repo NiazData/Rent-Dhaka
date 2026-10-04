@@ -52,7 +52,9 @@ describe("AppRoutes", () => {
 
   it("renders the property type page at /property-types/:type", () => {
     renderAt("/property-types/apartment");
-    expect(screen.getByRole("heading", { name: /property type/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /apartments for rent in dhaka/i })
+    ).toBeInTheDocument();
   });
 
   it("renders the about page", () => {
