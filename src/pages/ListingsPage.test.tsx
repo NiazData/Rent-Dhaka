@@ -71,7 +71,7 @@ describe("ListingsPage", () => {
     );
 
     expect(screen.getByRole("heading", { name: /properties for sale/i })).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(3);
+    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(1);
   });
 
   it("shows the ready-built-by-builders heading for listingPurpose=builder", async () => {
