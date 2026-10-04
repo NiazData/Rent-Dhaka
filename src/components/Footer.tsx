@@ -10,9 +10,7 @@ export function Footer() {
   return (
     <footer className="border-t border-stone-200 bg-stone-50">
       <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-stone-600">
-        <p className="font-semibold text-stone-900">Rent Dhaka</p>
-        <p className="mt-1">Helping renters find verified homes across Dhaka.</p>
-        <nav aria-label="Browse by property type" className="mt-4">
+        <nav aria-label="Browse by property type">
           <p className="font-medium text-stone-900">Browse by Property Type</p>
           <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
             {propertyTypeLinks.map((link) => (

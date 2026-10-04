@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { listings } from "./listings";
 
 describe("listings seed data", () => {
-  it("has at least 8 listings", () => {
-    expect(listings.length).toBeGreaterThanOrEqual(8);
+  it("has at least 5 listings", () => {
+    expect(listings.length).toBeGreaterThanOrEqual(5);
   });
 
   it("has unique slugs", () => {
@@ -18,7 +18,7 @@ describe("listings seed data", () => {
       expect(listing.beds).toBeGreaterThanOrEqual(0);
       expect(listing.baths).toBeGreaterThanOrEqual(0);
       expect(listing.sqft).toBeGreaterThan(0);
-      expect(listing.photos.length).toBeGreaterThanOrEqual(2);
+      expect(listing.photos.every((photo) => !photo.includes("unsplash.com"))).toBe(true);
       expect(listing.amenities.length).toBeGreaterThan(0);
       expect(Number.isNaN(new Date(listing.availableFrom).getTime())).toBe(false);
       expect(listing.lat).toBeGreaterThan(23.6);
@@ -28,20 +28,22 @@ describe("listings seed data", () => {
     }
   });
 
-  it("includes at least one listing with no pets allowed and one that allows pets", () => {
-    const noPets = listings.some((l) => l.petPolicy.toLowerCase().includes("no pets"));
-    const petsOk = listings.some((l) => !l.petPolicy.toLowerCase().includes("no pets"));
-    expect(noPets).toBe(true);
-    expect(petsOk).toBe(true);
-  });
-
-  it("covers all four property types", () => {
-    const types = new Set(listings.map((l) => l.propertyType));
-    expect(types).toEqual(new Set(["apartment", "single-family", "condo", "townhome"]));
-  });
-
   it("covers all three listing purposes", () => {
     const purposes = new Set(listings.map((l) => l.listingPurpose));
     expect(purposes).toEqual(new Set(["rent", "sale", "builder"]));
+  });
+
+  it("has at least 2 real photos for every sale and builder listing", () => {
+    const nonRentListings = listings.filter((l) => l.listingPurpose !== "rent");
+    for (const listing of nonRentListings) {
+      expect(listing.photos.length).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it("has no photos for rent listings since none have been supplied yet", () => {
+    const rentListings = listings.filter((l) => l.listingPurpose === "rent");
+    for (const listing of rentListings) {
+      expect(listing.photos).toEqual([]);
+    }
   });
 });

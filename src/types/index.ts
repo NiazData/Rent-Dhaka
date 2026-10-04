@@ -38,7 +38,6 @@ export interface PropertyTypeInfo {
   type: PropertyType;
   title: string;
   description: string;
-  heroImage: string;
 }
 
 export interface ListingFilters {

@@ -26,7 +26,7 @@ export default function AboutPage() {
       </div>
 
       <section className="mt-10">
-        <h2 className="text-xl font-semibold text-stone-900">What Renters Say</h2>
+        <h2 className="text-xl font-semibold text-stone-900">What Customers Say</h2>
         <div className="mt-6">
           <TestimonialsList />
         </div>

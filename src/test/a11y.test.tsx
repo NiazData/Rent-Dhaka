@@ -42,7 +42,7 @@ describe("accessibility", () => {
 
   it("Listing detail page has no axe violations", async () => {
     const { container } = render(
-      <MemoryRouter initialEntries={["/listings/gulshan-2-modern-apartment"]}>
+      <MemoryRouter initialEntries={["/listings/bosila-garden-city-flat-a"]}>
         <Routes>
           <Route path="/listings/:slug" element={<ListingDetailPage />} />
         </Routes>

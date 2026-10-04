@@ -26,32 +26,29 @@ describe("getListings", () => {
   });
 
   it("filters by area, case-insensitively", () => {
-    const result = getListings({ area: "dhanmondi" });
+    const result = getListings({ area: "bosila" });
     expect(result.length).toBeGreaterThan(0);
-    expect(result.every((l) => l.area.toLowerCase() === "dhanmondi")).toBe(true);
+    expect(result.every((l) => l.area.toLowerCase().includes("bosila"))).toBe(true);
   });
 
-  it("filters by area using a partial match, so 'Gulshan' finds Gulshan 1 and Gulshan 2", () => {
-    const result = getListings({ area: "Gulshan" });
-    expect(result).toHaveLength(2);
-    expect(result.map((l) => l.area).sort()).toEqual(["Gulshan 1", "Gulshan 2"]);
+  it("filters by area using a partial match, so 'Mohammadpur' finds every Mohammadpur-area listing", () => {
+    const result = getListings({ area: "Mohammadpur" });
+    expect(result).toHaveLength(4);
   });
 
   it("still narrows to a specific sub-area when one is given", () => {
-    const result = getListings({ area: "gulshan 2" });
-    expect(result.map((l) => l.area)).toEqual(["Gulshan 2"]);
+    const result = getListings({ area: "bosila" });
+    expect(result).toHaveLength(3);
   });
 
-  it("filters by minimum beds", () => {
+  it("filters by minimum beds, returning none when no listing matches", () => {
     const result = getListings({ minBeds: 4 });
-    expect(result.every((l) => l.beds >= 4)).toBe(true);
-    expect(result.length).toBeGreaterThan(0);
+    expect(result).toEqual([]);
   });
 
-  it("filters by property type", () => {
+  it("filters by property type, returning none when no listing matches", () => {
     const result = getListings({ propertyType: "condo" });
-    expect(result.every((l) => l.propertyType === "condo")).toBe(true);
-    expect(result.length).toBeGreaterThan(0);
+    expect(result).toEqual([]);
   });
 
   it("filters by listing purpose", () => {
@@ -89,8 +86,8 @@ describe("getListings", () => {
 
 describe("getListingBySlug", () => {
   it("returns the matching listing", () => {
-    const listing = getListingBySlug("gulshan-2-modern-apartment");
-    expect(listing?.title).toBe("Modern 3-Bedroom Apartment in Gulshan 2");
+    const listing = getListingBySlug("bosila-garden-city-flat-a");
+    expect(listing?.title).toBe("Flat A — 3 Bedroom Apartment in Bosila Garden City, Mohammadpur");
   });
 
   it("returns undefined for an unknown slug", () => {

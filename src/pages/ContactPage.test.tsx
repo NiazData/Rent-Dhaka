@@ -13,17 +13,11 @@ vi.mock("react-leaflet", () => ({
 }));
 
 describe("ContactPage", () => {
-  it("renders click-to-call, WhatsApp, and email links plus the office map", () => {
+  it("renders only the email link (no call or WhatsApp) plus the office map", () => {
     render(<ContactPage />);
 
-    expect(screen.getByRole("link", { name: /call/i })).toHaveAttribute(
-      "href",
-      "tel:+8801970249432"
-    );
-    expect(screen.getByRole("link", { name: /whatsapp/i })).toHaveAttribute(
-      "href",
-      "https://wa.me/15305913113"
-    );
+    expect(screen.queryByRole("link", { name: /call/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /whatsapp/i })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /shamim2005@gmail\.com/i })).toHaveAttribute(
       "href",
       "mailto:Shamim2005@gmail.com"

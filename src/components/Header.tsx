@@ -51,6 +51,9 @@ export function Header() {
           aria-label="Main"
           className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-stone-700"
         >
+          <Link to="/" className="hover:text-accent-600">
+            Home
+          </Link>
           <Link to="/about" className="hover:text-accent-600">
             About
           </Link>

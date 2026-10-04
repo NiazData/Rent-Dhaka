@@ -1,3 +1,4 @@
+import { ImageOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Listing } from "../types";
 import { formatBDT } from "../lib/format";
@@ -6,11 +7,20 @@ import { Card, CardContent } from "./ui/card";
 export function ListingCard({ listing }: { listing: Listing }) {
   return (
     <Card>
-      <img
-        src={listing.photos[0]}
-        alt={listing.title}
-        className="h-48 w-full rounded-t-lg bg-stone-100 object-contain"
-      />
+      {listing.photos.length > 0 ? (
+        <img
+          src={listing.photos[0]}
+          alt={listing.title}
+          className="h-48 w-full rounded-t-lg bg-stone-100 object-contain"
+        />
+      ) : (
+        <div
+          aria-hidden="true"
+          className="flex h-48 w-full items-center justify-center rounded-t-lg bg-stone-100 text-stone-400"
+        >
+          <ImageOff className="h-10 w-10" />
+        </div>
+      )}
       <CardContent>
         <h3 className="text-base font-semibold text-stone-900">{listing.title}</h3>
         <p className="text-sm text-stone-600">{listing.area}</p>

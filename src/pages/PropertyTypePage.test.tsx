@@ -14,11 +14,20 @@ function renderAt(path: string) {
 }
 
 describe("PropertyTypePage", () => {
-  it("renders the condo type info and only condo listings", () => {
+  it("renders the apartment type info and only apartment rent listings", () => {
+    renderAt("/property-types/apartment");
+
+    expect(
+      screen.getByRole("heading", { name: /apartments for rent in dhaka/i })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(3);
+  });
+
+  it("shows no listings for a rent property type with no current matches", () => {
     renderAt("/property-types/condo");
 
     expect(screen.getByRole("heading", { name: /condos for rent in dhaka/i })).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(2);
+    expect(screen.queryByRole("link", { name: /view details/i })).not.toBeInTheDocument();
   });
 
   it("shows a not-found message for an unknown type", () => {

@@ -49,7 +49,7 @@ describe("ApplicationPage", () => {
 
   it("blocks moving to the next step until the current step's required fields are valid", async () => {
     const user = userEvent.setup();
-    renderAt("/apply/gulshan-2-modern-apartment");
+    renderAt("/apply/bosila-garden-city-flat-a");
 
     expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
     await user.type(screen.getByLabelText(/full name/i), "Rafiq Ahmed");
@@ -61,7 +61,7 @@ describe("ApplicationPage", () => {
   it("walks through every step and submits successfully on review", async () => {
     vi.mocked(submitApplication).mockResolvedValueOnce(undefined);
     const user = userEvent.setup();
-    renderAt("/apply/gulshan-2-modern-apartment");
+    renderAt("/apply/bosila-garden-city-flat-a");
 
     await completeAllSteps(user);
 
@@ -74,7 +74,7 @@ describe("ApplicationPage", () => {
   it("shows an error message when submission fails", async () => {
     vi.mocked(submitApplication).mockRejectedValueOnce(new Error("network error"));
     const user = userEvent.setup();
-    renderAt("/apply/gulshan-2-modern-apartment");
+    renderAt("/apply/bosila-garden-city-flat-a");
 
     await completeAllSteps(user);
     await user.click(screen.getByRole("button", { name: /submit application/i }));

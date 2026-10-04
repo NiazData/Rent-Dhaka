@@ -1,11 +1,22 @@
 import { useState, type KeyboardEvent, type TouchEvent } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 
 const SWIPE_THRESHOLD_PX = 50;
 
 export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
+  if (photos.length === 0) {
+    return (
+      <div
+        aria-hidden="true"
+        className="flex h-96 w-full items-center justify-center rounded-lg bg-stone-100 text-stone-400"
+      >
+        <ImageOff className="h-10 w-10" />
+      </div>
+    );
+  }
 
   function goPrev() {
     setIndex((i) => (i - 1 + photos.length) % photos.length);

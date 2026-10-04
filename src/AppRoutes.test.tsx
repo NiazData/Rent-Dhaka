@@ -56,16 +56,16 @@ describe("AppRoutes", () => {
   });
 
   it("renders the listing detail page at /listings/:slug", () => {
-    renderAt("/listings/gulshan-2-modern-apartment");
+    renderAt("/listings/bosila-garden-city-flat-a");
     expect(
-      screen.getByRole("heading", { name: /modern 3-bedroom apartment in gulshan 2/i })
+      screen.getByRole("heading", { name: /flat a.*3 bedroom apartment in bosila garden city/i })
     ).toBeInTheDocument();
   });
 
   it("renders the application page at /apply/:slug", () => {
-    renderAt("/apply/gulshan-2-modern-apartment");
+    renderAt("/apply/bosila-garden-city-flat-a");
     expect(
-      screen.getByRole("heading", { name: /apply for modern 3-bedroom apartment in gulshan 2/i })
+      screen.getByRole("heading", { name: /apply for flat a.*3 bedroom apartment in bosila garden city/i })
     ).toBeInTheDocument();
   });
 

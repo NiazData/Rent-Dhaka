@@ -14,23 +14,10 @@ vi.mock("react-leaflet", () => ({
   Popup: ({ children }: { children: ReactNode }) => <div data-testid="popup">{children}</div>,
 }));
 
-vi.mock("../lib/supabase", () => ({
-  SITE_IMAGES_BUCKET: "site-images",
-  CONNECT_BUILDERS_PREFIX: "connect-builders",
-  supabase: {
-    storage: {
-      from: vi.fn(() => ({
-        list: vi.fn().mockResolvedValue({ data: [] }),
-        getPublicUrl: vi.fn((path: string) => ({ data: { publicUrl: `https://fake.test/${path}` } })),
-      })),
-    },
-  },
-}));
-
 describe("ListingsPage", () => {
   it("renders only listings matching the filters in the URL", () => {
     render(
-      <MemoryRouter initialEntries={["/listings?propertyType=condo"]}>
+      <MemoryRouter initialEntries={["/listings?minRentBDT=1000000"]}>
         <ListingsPage />
       </MemoryRouter>
     );
@@ -57,9 +44,11 @@ describe("ListingsPage", () => {
       </MemoryRouter>
     );
 
-    await user.type(screen.getByLabelText(/^area$/i), "Banani");
+    await user.type(screen.getByLabelText(/^area$/i), "Rampura");
 
-    expect(screen.getByText("Executive 3-Bedroom Condo in Banani")).toBeInTheDocument();
+    expect(
+      screen.getByText("Ready 3-Bedroom Apartment by City Builders in Rampura")
+    ).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(1);
   });
 
@@ -74,7 +63,22 @@ describe("ListingsPage", () => {
     expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(1);
   });
 
-  it("shows the ready-built-by-builders heading for listingPurpose=builder", async () => {
+  it("shows the 3 real rent listings with a no-photo placeholder for listingPurpose=rent", () => {
+    render(
+      <MemoryRouter initialEntries={["/listings?listingPurpose=rent"]}>
+        <ListingsPage />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole("heading", { name: /properties for rent/i })).toBeInTheDocument();
+    expect(screen.getByText(/flat a/i)).toBeInTheDocument();
+    expect(screen.getByText(/flat b/i)).toBeInTheDocument();
+    expect(screen.getByText(/flat c/i)).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(3);
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+  });
+
+  it("shows a Coming Soon card with the Connect Builders photo for listingPurpose=builder", () => {
     render(
       <MemoryRouter initialEntries={["/listings?listingPurpose=builder"]}>
         <ListingsPage />
@@ -82,15 +86,19 @@ describe("ListingsPage", () => {
     );
 
     expect(
-      await screen.findByRole("heading", { name: /ready-built properties by builders/i })
+      screen.getByRole("heading", { name: /ready-built properties by builders/i })
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(3);
+    expect(screen.getByText("Coming Soon")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /property under construction/i })).toHaveAttribute(
+      "src",
+      "/images/connect-builders/connect-builders.jpeg"
+    );
   });
 
   it("toggles to map view and renders a marker per listing", async () => {
     const user = userEvent.setup();
     render(
-      <MemoryRouter initialEntries={["/listings?propertyType=condo"]}>
+      <MemoryRouter initialEntries={["/listings?listingPurpose=sale"]}>
         <ListingsPage />
       </MemoryRouter>
     );
@@ -98,6 +106,6 @@ describe("ListingsPage", () => {
     await user.click(screen.getByRole("button", { name: /^map$/i }));
 
     expect(screen.getByTestId("map-container")).toBeInTheDocument();
-    expect(screen.getAllByTestId("marker")).toHaveLength(2);
+    expect(screen.getAllByTestId("marker")).toHaveLength(1);
   });
 });
