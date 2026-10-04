@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import ListingDetailPage from "./ListingDetailPage";
@@ -11,6 +12,11 @@ vi.mock("react-leaflet", () => ({
   TileLayer: () => <div data-testid="tile-layer" />,
   Marker: ({ children }: { children?: ReactNode }) => <div data-testid="marker">{children}</div>,
   Popup: ({ children }: { children: ReactNode }) => <div data-testid="popup">{children}</div>,
+}));
+
+vi.mock("../lib/netlify-forms", () => ({
+  submitTourRequest: vi.fn(),
+  submitApplication: vi.fn(),
 }));
 
 function renderAt(path: string) {
@@ -40,5 +46,13 @@ describe("ListingDetailPage", () => {
     renderAt("/listings/does-not-exist");
 
     expect(screen.getByRole("heading", { name: /listing not found/i })).toBeInTheDocument();
+  });
+
+  it("opens the schedule tour modal when its button is clicked", async () => {
+    const user = userEvent.setup();
+    renderAt("/listings/gulshan-2-modern-apartment");
+
+    await user.click(screen.getByRole("button", { name: /schedule tour/i }));
+    expect(screen.getByText("Schedule a Tour")).toBeInTheDocument();
   });
 });
