@@ -9,3 +9,10 @@ vite.config.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Environment variables (contains Supabase project credentials)
+.env
+.env.local
+
+# Local staging folder for images to upload via the admin panel
+pictures/

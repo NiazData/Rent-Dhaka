@@ -21,6 +21,20 @@ vi.mock("../lib/netlify-forms", () => ({
   submitApplication: vi.fn(),
 }));
 
+vi.mock("../lib/supabase", () => ({
+  SITE_IMAGES_BUCKET: "site-images",
+  OWNER_PHOTO_PATH: "owner/photo.jpg",
+  CONNECT_BUILDERS_PREFIX: "connect-builders",
+  supabase: {
+    storage: {
+      from: vi.fn(() => ({
+        getPublicUrl: vi.fn(() => ({ data: { publicUrl: "https://fake.test/owner/photo.jpg" } })),
+        list: vi.fn().mockResolvedValue({ data: [] }),
+      })),
+    },
+  },
+}));
+
 describe("accessibility", () => {
   it("Home page has no axe violations", async () => {
     const { container } = render(

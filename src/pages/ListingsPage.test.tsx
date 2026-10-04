@@ -14,6 +14,19 @@ vi.mock("react-leaflet", () => ({
   Popup: ({ children }: { children: ReactNode }) => <div data-testid="popup">{children}</div>,
 }));
 
+vi.mock("../lib/supabase", () => ({
+  SITE_IMAGES_BUCKET: "site-images",
+  CONNECT_BUILDERS_PREFIX: "connect-builders",
+  supabase: {
+    storage: {
+      from: vi.fn(() => ({
+        list: vi.fn().mockResolvedValue({ data: [] }),
+        getPublicUrl: vi.fn((path: string) => ({ data: { publicUrl: `https://fake.test/${path}` } })),
+      })),
+    },
+  },
+}));
+
 describe("ListingsPage", () => {
   it("renders only listings matching the filters in the URL", () => {
     render(
@@ -61,7 +74,7 @@ describe("ListingsPage", () => {
     expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(3);
   });
 
-  it("shows the ready-built-by-builders heading for listingPurpose=builder", () => {
+  it("shows the ready-built-by-builders heading for listingPurpose=builder", async () => {
     render(
       <MemoryRouter initialEntries={["/listings?listingPurpose=builder"]}>
         <ListingsPage />
@@ -69,7 +82,7 @@ describe("ListingsPage", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: /ready-built properties by builders/i })
+      await screen.findByRole("heading", { name: /ready-built properties by builders/i })
     ).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(3);
   });

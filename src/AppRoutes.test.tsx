@@ -13,6 +13,25 @@ vi.mock("react-leaflet", () => ({
   Popup: ({ children }: { children: ReactNode }) => <div data-testid="popup">{children}</div>,
 }));
 
+vi.mock("./lib/supabase", () => ({
+  SITE_IMAGES_BUCKET: "site-images",
+  OWNER_PHOTO_PATH: "owner/photo.jpg",
+  CONNECT_BUILDERS_PREFIX: "connect-builders",
+  supabase: {
+    auth: {
+      getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
+      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+      signInWithPassword: vi.fn(),
+    },
+    storage: {
+      from: vi.fn(() => ({
+        getPublicUrl: vi.fn(() => ({ data: { publicUrl: "https://fake.test/owner/photo.jpg" } })),
+        list: vi.fn().mockResolvedValue({ data: [] }),
+      })),
+    },
+  },
+}));
+
 function renderAt(path: string) {
   render(
     <MemoryRouter initialEntries={[path]}>
@@ -87,6 +106,16 @@ describe("AppRoutes", () => {
   it("renders the login coming-soon page", () => {
     renderAt("/login");
     expect(screen.getByRole("heading", { name: /login \/ sign up/i })).toBeInTheDocument();
+  });
+
+  it("renders the admin login page", () => {
+    renderAt("/admin/login");
+    expect(screen.getByRole("heading", { name: /admin login/i })).toBeInTheDocument();
+  });
+
+  it("redirects an unauthenticated visitor from /admin to the admin login page", async () => {
+    renderAt("/admin");
+    expect(await screen.findByRole("heading", { name: /admin login/i })).toBeInTheDocument();
   });
 
   it("renders the not found page for an unknown route", () => {

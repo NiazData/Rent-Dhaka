@@ -5,6 +5,7 @@ import { ListingCard } from "../components/ListingCard";
 import { ListingFilterSidebar } from "../components/ListingFilterSidebar";
 import { ListingsMapView } from "../components/ListingsMapView";
 import { EmptyListingsState } from "../components/EmptyListingsState";
+import { ConnectBuildersGallery } from "../components/ConnectBuildersGallery";
 import { Button } from "../components/ui/button";
 import type { ListingFilters, ListingPurpose } from "../types";
 
@@ -50,6 +51,7 @@ export default function ListingsPage() {
           </Button>
         </div>
       </div>
+      {filters.listingPurpose === "builder" && <ConnectBuildersGallery />}
       <div className="mt-6 flex flex-col gap-6 md:flex-row">
         <ListingFilterSidebar filters={filters} onChange={handleFiltersChange} />
         <div className="flex-1">
