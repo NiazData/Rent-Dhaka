@@ -6,7 +6,6 @@ import { ListingCard } from "../components/ListingCard";
 import { ListingFilterSidebar } from "../components/ListingFilterSidebar";
 import { ListingsMapView } from "../components/ListingsMapView";
 import { EmptyListingsState } from "../components/EmptyListingsState";
-import { ComingSoonListingCard } from "../components/ComingSoonListingCard";
 import { Button } from "../components/ui/button";
 import type { ListingFilters, ListingPurpose } from "../types";
 
@@ -14,12 +13,6 @@ const PURPOSE_HEADINGS: Record<ListingPurpose, string> = {
   rent: "Properties for Rent",
   sale: "Properties for Sale",
   builder: "Ready-Built Properties by Builders",
-};
-
-const COMING_SOON_PURPOSES: ListingPurpose[] = ["builder"];
-
-const COMING_SOON_PHOTOS: Partial<Record<ListingPurpose, string>> = {
-  builder: "/images/connect-builders/connect-builders.jpeg",
 };
 
 export default function ListingsPage() {
@@ -35,17 +28,6 @@ export default function ListingsPage() {
       if (value !== undefined) params.set(key, String(value));
     });
     setSearchParams(params);
-  }
-
-  if (filters.listingPurpose && COMING_SOON_PURPOSES.includes(filters.listingPurpose)) {
-    return (
-      <div className="mx-auto max-w-6xl px-4 py-8">
-        <h1 className="text-2xl font-bold text-stone-900">{heading}</h1>
-        <div className="mt-6">
-          <ComingSoonListingCard photoSrc={COMING_SOON_PHOTOS[filters.listingPurpose]} />
-        </div>
-      </div>
-    );
   }
 
   return (

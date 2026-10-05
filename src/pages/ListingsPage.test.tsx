@@ -92,7 +92,7 @@ describe("ListingsPage", () => {
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 
-  it("shows a Coming Soon card with the Connect Builders photo for listingPurpose=builder", () => {
+  it("shows real builder listings for listingPurpose=builder, same as rent and sale", async () => {
     render(
       <MemoryRouter initialEntries={["/listings?listingPurpose=builder"]}>
         <ListingsPage />
@@ -102,11 +102,10 @@ describe("ListingsPage", () => {
     expect(
       screen.getByRole("heading", { name: /ready-built properties by builders/i })
     ).toBeInTheDocument();
-    expect(screen.getByText("Coming Soon")).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: /property under construction/i })).toHaveAttribute(
-      "src",
-      "/images/connect-builders/connect-builders.jpeg"
-    );
+    expect(
+      await screen.findByText("Ready 3-Bedroom Apartment by City Builders in Rampura")
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /view details/i })).toHaveLength(1);
   });
 
   it("toggles to map view and renders a marker per listing", async () => {
