@@ -1,42 +1,38 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import AdminDashboardPage from "./AdminDashboardPage";
+import { createFakeListingsSupabase } from "../../test/fakeSupabaseTable";
+import { ALL_LISTINGS, FLAT_A } from "../../test/listingFixtures";
 
-const { storageFromMock, storageFromFn, authMock } = vi.hoisted(() => {
+const { fakeTable, storageFromMock, storageFromFn, authMock } = vi.hoisted(() => {
   const storageFromMock = {
-    getPublicUrl: vi.fn(),
-    upload: vi.fn(),
-    list: vi.fn(),
-    remove: vi.fn(),
+    getPublicUrl: vi.fn(() => ({ data: { publicUrl: "https://fake.test/listings/photo.jpg" } })),
+    upload: vi.fn().mockResolvedValue({ error: null }),
+    remove: vi.fn().mockResolvedValue({ error: null }),
   };
   return {
+    fakeTable: { from: vi.fn() },
     storageFromMock,
     storageFromFn: vi.fn(() => storageFromMock),
-    authMock: { signOut: vi.fn() },
+    authMock: { signOut: vi.fn().mockResolvedValue({ error: null }) },
   };
 });
 
 vi.mock("../../lib/supabase", () => ({
   SITE_IMAGES_BUCKET: "site-images",
-  OWNER_PHOTO_PATH: "owner/photo.jpg",
-  CONNECT_BUILDERS_PREFIX: "connect-builders",
+  LISTINGS_TABLE: "listings",
+  LISTING_PHOTOS_PREFIX: "listings",
   supabase: {
     auth: authMock,
     storage: { from: storageFromFn },
+    from: (...args: unknown[]) => fakeTable.from(...args),
   },
 }));
 
-beforeEach(() => {
-  vi.resetAllMocks();
-  storageFromFn.mockImplementation(() => storageFromMock);
-  storageFromMock.getPublicUrl.mockImplementation((path: string) => ({
-    data: { publicUrl: `https://fake.test/${path}` },
-  }));
-});
-
 function renderDashboard() {
+  Object.assign(fakeTable, createFakeListingsSupabase(ALL_LISTINGS));
   render(
     <MemoryRouter initialEntries={["/admin"]}>
       <Routes>
@@ -47,79 +43,104 @@ function renderDashboard() {
   );
 }
 
+async function goToListingsTab(user: ReturnType<typeof userEvent.setup>) {
+  await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
+  await user.click(screen.getByRole("button", { name: /^listings$/i }));
+}
+
+function getModalScope() {
+  const heading = screen.getByRole("heading", { name: /add listing|edit listing/i });
+  return within(heading.closest("div")!.parentElement as HTMLElement);
+}
+
 describe("AdminDashboardPage", () => {
-  it("renders the current owner photo and uploads a replacement", async () => {
-    storageFromMock.list.mockResolvedValue({ data: [] });
-    storageFromMock.upload.mockResolvedValue({ error: null });
-
-    const user = userEvent.setup();
+  it("shows stats and recent listings on the overview tab", async () => {
     renderDashboard();
 
-    expect(screen.getByAltText("Current owner photo")).toHaveAttribute(
-      "src",
-      "https://fake.test/owner/photo.jpg?v=0"
-    );
-
-    const file = new File(["photo"], "owner.jpg", { type: "image/jpeg" });
-    await user.upload(screen.getByLabelText(/replace photo/i), file);
-
-    await waitFor(() =>
-      expect(storageFromMock.upload).toHaveBeenCalledWith("owner/photo.jpg", file, {
-        upsert: true,
-      })
-    );
-    await waitFor(() =>
-      expect(screen.getByAltText("Current owner photo")).toHaveAttribute(
-        "src",
-        "https://fake.test/owner/photo.jpg?v=1"
-      )
-    );
+    expect(await screen.findByText(FLAT_A.title)).toBeInTheDocument();
+    expect(screen.getByText("Total Listings")).toBeInTheDocument();
+    expect(screen.getByText("5")).toBeInTheDocument();
   });
 
-  it("lists the Connect Builders gallery and deletes an image", async () => {
-    storageFromMock.list.mockResolvedValueOnce({
-      data: [{ name: "photo1.jpg" }, { name: "photo2.jpg" }],
-    });
-    storageFromMock.remove.mockResolvedValue({ error: null });
-    storageFromMock.list.mockResolvedValueOnce({ data: [{ name: "photo2.jpg" }] });
-
+  it("lists every listing with purpose, price, and beds/baths on the listings tab", async () => {
     const user = userEvent.setup();
     renderDashboard();
+    await goToListingsTab(user);
 
-    expect(await screen.findByAltText("photo1.jpg")).toBeInTheDocument();
-    expect(screen.getByAltText("photo2.jpg")).toBeInTheDocument();
-
-    await user.click(screen.getAllByRole("button", { name: /delete/i })[0]);
-
-    expect(storageFromMock.remove).toHaveBeenCalledWith(["connect-builders/photo1.jpg"]);
-    await waitFor(() => expect(screen.queryByAltText("photo1.jpg")).not.toBeInTheDocument());
-    expect(screen.getByAltText("photo2.jpg")).toBeInTheDocument();
+    expect(screen.getByText(FLAT_A.title)).toBeInTheDocument();
+    expect(screen.getAllByText(/rent/i).length).toBeGreaterThan(0);
+    expect(screen.getByText("৳12,000")).toBeInTheDocument();
   });
 
-  it("uploads a new image to the Connect Builders gallery", async () => {
-    storageFromMock.list.mockResolvedValueOnce({ data: [] });
-    storageFromMock.upload.mockResolvedValue({ error: null });
-    storageFromMock.list.mockResolvedValueOnce({ data: [{ name: "new-photo.jpg" }] });
-
+  it("creates a new listing through the Add Listing modal", async () => {
     const user = userEvent.setup();
     renderDashboard();
+    await goToListingsTab(user);
 
-    expect(await screen.findByText(/no images yet/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /add listing/i }));
 
-    const file = new File(["photo"], "new-photo.jpg", { type: "image/jpeg" });
-    await user.upload(screen.getByLabelText(/add a new image/i), file);
+    const modal = getModalScope();
+    await user.type(modal.getByLabelText(/slug/i), "test-new-flat");
+    await user.type(modal.getByLabelText(/title/i), "Test New Flat");
+    await user.type(modal.getByLabelText(/address/i), "Somewhere, Dhaka");
+    await user.type(modal.getByLabelText(/^area/i), "Test Area");
+    await user.type(modal.getByLabelText(/rent \/ price/i), "20000");
+    await user.type(modal.getByLabelText(/deposit/i), "20000");
+    await user.type(modal.getByLabelText(/^beds/i), "2");
+    await user.type(modal.getByLabelText(/^baths/i), "1");
+    await user.type(modal.getByLabelText(/^sqft/i), "900");
+    await user.type(modal.getByLabelText(/available from/i), "2026-12-01");
+    await user.type(modal.getByLabelText(/latitude/i), "23.76");
+    await user.type(modal.getByLabelText(/longitude/i), "90.36");
+
+    await user.click(modal.getByRole("button", { name: /add listing/i }));
+
+    expect(await screen.findByText("Test New Flat")).toBeInTheDocument();
+  });
+
+  it("edits an existing listing through the modal", async () => {
+    const user = userEvent.setup();
+    renderDashboard();
+    await goToListingsTab(user);
+
+    await user.click(screen.getByRole("button", { name: `Edit ${FLAT_A.title}` }));
+
+    const modal = getModalScope();
+    const titleInput = modal.getByLabelText(/title/i);
+    await user.clear(titleInput);
+    await user.type(titleInput, "Flat A Updated");
+    await user.click(modal.getByRole("button", { name: /save changes/i }));
+
+    expect(await screen.findByText("Flat A Updated")).toBeInTheDocument();
+  });
+
+  it("uploads a photo inside the modal and includes it on save", async () => {
+    const user = userEvent.setup();
+    renderDashboard();
+    await goToListingsTab(user);
+
+    await user.click(screen.getByRole("button", { name: `Edit ${FLAT_A.title}` }));
+    const modal = getModalScope();
+
+    const file = new File(["photo"], "flat-a.jpg", { type: "image/jpeg" });
+    await user.upload(modal.getByLabelText(/upload photos/i), file);
 
     await waitFor(() => expect(storageFromMock.upload).toHaveBeenCalled());
-    const [uploadedPath] = storageFromMock.upload.mock.calls[0];
-    expect(uploadedPath).toMatch(/^connect-builders\/\d+-new-photo\.jpg$/);
+    expect(await modal.findByRole("button", { name: /remove photo/i })).toBeInTheDocument();
+  });
 
-    expect(await screen.findByAltText("new-photo.jpg")).toBeInTheDocument();
+  it("deletes a listing after confirming", async () => {
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    const user = userEvent.setup();
+    renderDashboard();
+    await goToListingsTab(user);
+
+    await user.click(screen.getByRole("button", { name: `Delete ${FLAT_A.title}` }));
+
+    await waitFor(() => expect(screen.queryByText(FLAT_A.title)).not.toBeInTheDocument());
   });
 
   it("signs out and navigates to the admin login page on logout", async () => {
-    storageFromMock.list.mockResolvedValue({ data: [] });
-    authMock.signOut.mockResolvedValue({ error: null });
-
     const user = userEvent.setup();
     renderDashboard();
 

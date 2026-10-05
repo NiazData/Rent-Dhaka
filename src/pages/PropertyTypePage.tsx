@@ -1,13 +1,19 @@
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { getPropertyTypeInfo } from "../lib/content-repository";
-import { getListings } from "../lib/listings-repository";
+import { useListings } from "../hooks/useListings";
 import { ListingCard } from "../components/ListingCard";
 import { NotFoundMessage } from "../components/NotFoundMessage";
-import type { PropertyType } from "../types";
+import type { ListingFilters } from "../types";
 
 export default function PropertyTypePage() {
   const { type } = useParams<{ type: string }>();
   const info = type ? getPropertyTypeInfo(type) : undefined;
+  const filters = useMemo<ListingFilters>(
+    () => (info ? { propertyType: info.type, listingPurpose: "rent" } : {}),
+    [info]
+  );
+  const { listings, loading } = useListings(filters);
 
   if (!info) {
     return (
@@ -18,8 +24,6 @@ export default function PropertyTypePage() {
     );
   }
 
-  const listings = getListings({ propertyType: info.type as PropertyType, listingPurpose: "rent" });
-
   return (
     <div>
       <section className="bg-accent-50 px-4 py-12 text-center">
@@ -28,11 +32,17 @@ export default function PropertyTypePage() {
       </section>
       <section className="mx-auto max-w-6xl px-4 py-12">
         <h2 className="text-xl font-semibold text-stone-900">Featured Listings</h2>
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {listings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
-          ))}
-        </div>
+        {loading ? (
+          <p role="status" className="mt-6">
+            Loading listings…
+          </p>
+        ) : (
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {listings.map((listing) => (
+              <ListingCard key={listing.id} listing={listing} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

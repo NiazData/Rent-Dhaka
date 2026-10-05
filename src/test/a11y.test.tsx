@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
@@ -8,6 +8,8 @@ import ListingsPage from "../pages/ListingsPage";
 import ListingDetailPage from "../pages/ListingDetailPage";
 import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
+import { createFakeListingsSupabase } from "./fakeSupabaseTable";
+import { ALL_LISTINGS } from "./listingFixtures";
 
 vi.mock("react-leaflet", () => ({
   MapContainer: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -21,6 +23,17 @@ vi.mock("../lib/netlify-forms", () => ({
   submitApplication: vi.fn(),
 }));
 
+const { fakeTable } = vi.hoisted(() => ({ fakeTable: { from: vi.fn() } }));
+
+vi.mock("../lib/supabase", () => ({
+  SITE_IMAGES_BUCKET: "site-images",
+  LISTINGS_TABLE: "listings",
+  LISTING_PHOTOS_PREFIX: "listings",
+  supabase: { from: (...args: unknown[]) => fakeTable.from(...args) },
+}));
+
+Object.assign(fakeTable, createFakeListingsSupabase(ALL_LISTINGS));
+
 describe("accessibility", () => {
   it("Home page has no axe violations", async () => {
     const { container } = render(
@@ -28,6 +41,7 @@ describe("accessibility", () => {
         <HomePage />
       </MemoryRouter>
     );
+    await waitFor(() => expect(container.querySelector('[role="status"]')).not.toBeInTheDocument());
     expect(await axe(container)).toHaveNoViolations();
   });
 
@@ -37,6 +51,7 @@ describe("accessibility", () => {
         <ListingsPage />
       </MemoryRouter>
     );
+    await waitFor(() => expect(container.querySelector('[role="status"]')).not.toBeInTheDocument());
     expect(await axe(container)).toHaveNoViolations();
   });
 
@@ -48,6 +63,7 @@ describe("accessibility", () => {
         </Routes>
       </MemoryRouter>
     );
+    await waitFor(() => expect(container.querySelector('[role="status"]')).not.toBeInTheDocument());
     expect(await axe(container)).toHaveNoViolations();
   });
 

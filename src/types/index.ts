@@ -40,6 +40,8 @@ export interface PropertyTypeInfo {
   description: string;
 }
 
+export type ListingInput = Omit<Listing, "id">;
+
 export interface ListingFilters {
   minRentBDT?: number;
   maxRentBDT?: number;

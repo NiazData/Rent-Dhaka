@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getListingBySlug } from "../lib/listings-repository";
+import { useListing } from "../hooks/useListing";
 import { useApplicationForm, type ApplicationStep } from "../hooks/useApplicationForm";
 import { submitApplication } from "../lib/netlify-forms";
 import { NotFoundMessage } from "../components/NotFoundMessage";
@@ -24,11 +24,15 @@ const STEP_LABELS: Record<ApplicationStep, string> = {
 
 export default function ApplicationPage() {
   const { slug } = useParams<{ slug: string }>();
-  const listing = slug ? getListingBySlug(slug) : undefined;
+  const { listing, loading } = useListing(slug);
   const form = useApplicationForm();
   const [submitStatus, setSubmitStatus] = useState<"idle" | "submitting" | "success" | "error">(
     "idle"
   );
+
+  if (loading) {
+    return <p role="status" className="mx-auto max-w-xl px-4 py-8">Loading…</p>;
+  }
 
   if (!listing) {
     return (

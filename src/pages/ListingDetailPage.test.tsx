@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import ListingDetailPage from "./ListingDetailPage";
+import { createFakeListingsSupabase } from "../test/fakeSupabaseTable";
+import { ALL_LISTINGS } from "../test/listingFixtures";
 
 vi.mock("react-leaflet", () => ({
   MapContainer: ({ children }: { children: ReactNode }) => (
@@ -19,6 +21,17 @@ vi.mock("../lib/netlify-forms", () => ({
   submitApplication: vi.fn(),
 }));
 
+const { fakeTable } = vi.hoisted(() => ({ fakeTable: { from: vi.fn() } }));
+
+vi.mock("../lib/supabase", () => ({
+  SITE_IMAGES_BUCKET: "site-images",
+  LISTINGS_TABLE: "listings",
+  LISTING_PHOTOS_PREFIX: "listings",
+  supabase: { from: (...args: unknown[]) => fakeTable.from(...args) },
+}));
+
+Object.assign(fakeTable, createFakeListingsSupabase(ALL_LISTINGS));
+
 function renderAt(path: string) {
   render(
     <MemoryRouter initialEntries={[path]}>
@@ -30,11 +43,11 @@ function renderAt(path: string) {
 }
 
 describe("ListingDetailPage", () => {
-  it("renders listing details, amenities, map, and the apply link for a valid slug", () => {
+  it("renders listing details, amenities, map, and the apply link for a valid slug", async () => {
     renderAt("/listings/bosila-garden-city-flat-a");
 
     expect(
-      screen.getByRole("heading", { name: /flat a.*3 bedroom apartment in bosila garden city/i })
+      await screen.findByRole("heading", { name: /flat a.*3 bedroom apartment in bosila garden city/i })
     ).toBeInTheDocument();
     expect(screen.getAllByText("৳12,000/mo").length).toBeGreaterThan(0);
     expect(screen.getByText(/generator backup/i)).toBeInTheDocument();
@@ -42,10 +55,10 @@ describe("ListingDetailPage", () => {
     expect(screen.getAllByRole("link", { name: /apply now/i }).length).toBeGreaterThan(0);
   });
 
-  it("shows a not-found message for an unknown slug", () => {
+  it("shows a not-found message for an unknown slug", async () => {
     renderAt("/listings/does-not-exist");
 
-    expect(screen.getByRole("heading", { name: /listing not found/i })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /listing not found/i })).toBeInTheDocument();
   });
 
   it("opens the schedule tour modal from the desktop button", async () => {
@@ -53,7 +66,7 @@ describe("ListingDetailPage", () => {
     renderAt("/listings/bosila-garden-city-flat-a");
 
     // [0] is the desktop action row, [1] is the mobile sticky bar (rendered after it).
-    const buttons = screen.getAllByRole("button", { name: /schedule tour/i });
+    const buttons = await screen.findAllByRole("button", { name: /schedule tour/i });
     expect(buttons).toHaveLength(2);
     await user.click(buttons[0]);
     expect(screen.getByText("Schedule a Tour")).toBeInTheDocument();
@@ -63,7 +76,8 @@ describe("ListingDetailPage", () => {
     const user = userEvent.setup();
     renderAt("/listings/bosila-garden-city-flat-a");
 
-    await user.click(screen.getAllByRole("button", { name: /schedule tour/i })[1]);
+    const buttons = await screen.findAllByRole("button", { name: /schedule tour/i });
+    await user.click(buttons[1]);
     expect(screen.getByText("Schedule a Tour")).toBeInTheDocument();
   });
 });

@@ -4,11 +4,24 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import ApplicationPage from "./ApplicationPage";
 import { submitApplication } from "../lib/netlify-forms";
+import { createFakeListingsSupabase } from "../test/fakeSupabaseTable";
+import { ALL_LISTINGS } from "../test/listingFixtures";
 
 vi.mock("../lib/netlify-forms", () => ({
   submitApplication: vi.fn(),
   submitTourRequest: vi.fn(),
 }));
+
+const { fakeTable } = vi.hoisted(() => ({ fakeTable: { from: vi.fn() } }));
+
+vi.mock("../lib/supabase", () => ({
+  SITE_IMAGES_BUCKET: "site-images",
+  LISTINGS_TABLE: "listings",
+  LISTING_PHOTOS_PREFIX: "listings",
+  supabase: { from: (...args: unknown[]) => fakeTable.from(...args) },
+}));
+
+Object.assign(fakeTable, createFakeListingsSupabase(ALL_LISTINGS));
 
 function renderAt(path: string) {
   render(
@@ -21,7 +34,7 @@ function renderAt(path: string) {
 }
 
 async function completeAllSteps(user: ReturnType<typeof userEvent.setup>) {
-  await user.type(screen.getByLabelText(/full name/i), "Rafiq Ahmed");
+  await user.type(await screen.findByLabelText(/full name/i), "Rafiq Ahmed");
   await user.type(screen.getByLabelText(/^email$/i), "rafiq@example.com");
   await user.type(screen.getByLabelText(/^phone$/i), "01711000000");
   await user.click(screen.getByRole("button", { name: /next/i }));
@@ -42,16 +55,16 @@ async function completeAllSteps(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe("ApplicationPage", () => {
-  it("shows a not-found message for an unknown slug", () => {
+  it("shows a not-found message for an unknown slug", async () => {
     renderAt("/apply/does-not-exist");
-    expect(screen.getByRole("heading", { name: /listing not found/i })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /listing not found/i })).toBeInTheDocument();
   });
 
   it("blocks moving to the next step until the current step's required fields are valid", async () => {
     const user = userEvent.setup();
     renderAt("/apply/bosila-garden-city-flat-a");
 
-    expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
+    expect(await screen.findByRole("button", { name: /next/i })).toBeDisabled();
     await user.type(screen.getByLabelText(/full name/i), "Rafiq Ahmed");
     await user.type(screen.getByLabelText(/^email$/i), "rafiq@example.com");
     await user.type(screen.getByLabelText(/^phone$/i), "01711000000");

@@ -1,8 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { useInactivityLogout } from "../hooks/useInactivityLogout";
 
 export function Layout() {
+  useInactivityLogout();
+
   return (
     <div className="flex min-h-screen flex-col">
       <a

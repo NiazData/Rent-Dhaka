@@ -6,5 +6,5 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const SITE_IMAGES_BUCKET = "site-images";
-export const OWNER_PHOTO_PATH = "owner/photo.jpg";
-export const CONNECT_BUILDERS_PREFIX = "connect-builders";
+export const LISTINGS_TABLE = "listings";
+export const LISTING_PHOTOS_PREFIX = "listings";

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getListings, parseListingFiltersFromSearchParams } from "../lib/listings-repository";
+import { parseListingFiltersFromSearchParams } from "../lib/listings-repository";
+import { useListings } from "../hooks/useListings";
 import { ListingCard } from "../components/ListingCard";
 import { ListingFilterSidebar } from "../components/ListingFilterSidebar";
 import { ListingsMapView } from "../components/ListingsMapView";
@@ -25,7 +26,7 @@ export default function ListingsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [view, setView] = useState<"list" | "map">("list");
   const filters = useMemo(() => parseListingFiltersFromSearchParams(searchParams), [searchParams]);
-  const listings = useMemo(() => getListings(filters), [filters]);
+  const { listings, loading } = useListings(filters);
   const heading = filters.listingPurpose ? PURPOSE_HEADINGS[filters.listingPurpose] : "Listings";
 
   function handleFiltersChange(next: ListingFilters) {
@@ -72,7 +73,9 @@ export default function ListingsPage() {
         <ListingFilterSidebar filters={filters} onChange={handleFiltersChange} />
         <div className="flex-1">
           <h2 className="sr-only">Search results</h2>
-          {listings.length === 0 ? (
+          {loading ? (
+            <p role="status">Loading listings…</p>
+          ) : listings.length === 0 ? (
             <EmptyListingsState />
           ) : view === "list" ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

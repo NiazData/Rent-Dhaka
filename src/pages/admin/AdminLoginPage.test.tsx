@@ -15,9 +15,9 @@ vi.mock("../../lib/supabase", () => ({
   },
 }));
 
-function renderPage() {
+function renderPage(path = "/admin/login") {
   render(
-    <MemoryRouter initialEntries={["/admin/login"]}>
+    <MemoryRouter initialEntries={[path]}>
       <Routes>
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin" element={<div>Admin Dashboard</div>} />
@@ -60,5 +60,13 @@ describe("AdminLoginPage", () => {
 
     expect(await screen.findByRole("alert")).toHaveTextContent(/invalid email or password/i);
     expect(screen.queryByText("Admin Dashboard")).not.toBeInTheDocument();
+  });
+
+  it("shows a signed-out-due-to-inactivity notice when redirected with reason=timeout", () => {
+    vi.mocked(supabase.auth.getSession).mockResolvedValue({ data: { session: null } } as never);
+
+    renderPage("/admin/login?reason=timeout");
+
+    expect(screen.getByRole("status")).toHaveTextContent(/signed out due to inactivity/i);
   });
 });

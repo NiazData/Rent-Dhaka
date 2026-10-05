@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { useSession } from "../../hooks/useSession";
 import { Button } from "../../components/ui/button";
@@ -9,6 +9,8 @@ import { Label } from "../../components/ui/label";
 export default function AdminLoginPage() {
   const { session, loading } = useSession();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const signedOutForInactivity = searchParams.get("reason") === "timeout";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -36,6 +38,11 @@ export default function AdminLoginPage() {
   return (
     <div className="mx-auto max-w-sm px-4 py-16">
       <h1 className="text-2xl font-bold text-stone-900">Admin Login</h1>
+      {signedOutForInactivity && (
+        <p role="status" className="mt-3 text-sm text-stone-600">
+          You were signed out due to inactivity. Please sign in again.
+        </p>
+      )}
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div>
           <Label htmlFor="admin-email">Email</Label>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getListingBySlug } from "../lib/listings-repository";
+import { useListing } from "../hooks/useListing";
 import { formatBDT } from "../lib/format";
 import { PhotoGallery } from "../components/PhotoGallery";
 import { StickyApplyBar } from "../components/StickyApplyBar";
@@ -11,8 +11,12 @@ import { Button } from "../components/ui/button";
 
 export default function ListingDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const listing = slug ? getListingBySlug(slug) : undefined;
+  const { listing, loading } = useListing(slug);
   const [tourModalOpen, setTourModalOpen] = useState(false);
+
+  if (loading) {
+    return <p role="status" className="mx-auto max-w-5xl px-4 py-8">Loading listing…</p>;
+  }
 
   if (!listing) {
     return (

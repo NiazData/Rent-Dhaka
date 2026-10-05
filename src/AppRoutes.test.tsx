@@ -3,6 +3,8 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { AppRoutes } from "./AppRoutes";
+import { createFakeListingsSupabase } from "./test/fakeSupabaseTable";
+import { ALL_LISTINGS } from "./test/listingFixtures";
 
 vi.mock("react-leaflet", () => ({
   MapContainer: ({ children }: { children: ReactNode }) => (
@@ -13,10 +15,12 @@ vi.mock("react-leaflet", () => ({
   Popup: ({ children }: { children: ReactNode }) => <div data-testid="popup">{children}</div>,
 }));
 
+const { fakeTable } = vi.hoisted(() => ({ fakeTable: { from: vi.fn() } }));
+
 vi.mock("./lib/supabase", () => ({
   SITE_IMAGES_BUCKET: "site-images",
-  OWNER_PHOTO_PATH: "owner/photo.jpg",
-  CONNECT_BUILDERS_PREFIX: "connect-builders",
+  LISTINGS_TABLE: "listings",
+  LISTING_PHOTOS_PREFIX: "listings",
   supabase: {
     auth: {
       getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
@@ -25,12 +29,15 @@ vi.mock("./lib/supabase", () => ({
     },
     storage: {
       from: vi.fn(() => ({
-        getPublicUrl: vi.fn(() => ({ data: { publicUrl: "https://fake.test/owner/photo.jpg" } })),
+        getPublicUrl: vi.fn(() => ({ data: { publicUrl: "https://fake.test/photo.jpg" } })),
         list: vi.fn().mockResolvedValue({ data: [] }),
       })),
     },
+    from: (...args: unknown[]) => fakeTable.from(...args),
   },
 }));
+
+Object.assign(fakeTable, createFakeListingsSupabase(ALL_LISTINGS));
 
 function renderAt(path: string) {
   render(
@@ -55,17 +62,19 @@ describe("AppRoutes", () => {
     expect(screen.getByRole("heading", { name: /listings/i })).toBeInTheDocument();
   });
 
-  it("renders the listing detail page at /listings/:slug", () => {
+  it("renders the listing detail page at /listings/:slug", async () => {
     renderAt("/listings/bosila-garden-city-flat-a");
     expect(
-      screen.getByRole("heading", { name: /flat a.*3 bedroom apartment in bosila garden city/i })
+      await screen.findByRole("heading", { name: /flat a.*3 bedroom apartment in bosila garden city/i })
     ).toBeInTheDocument();
   });
 
-  it("renders the application page at /apply/:slug", () => {
+  it("renders the application page at /apply/:slug", async () => {
     renderAt("/apply/bosila-garden-city-flat-a");
     expect(
-      screen.getByRole("heading", { name: /apply for flat a.*3 bedroom apartment in bosila garden city/i })
+      await screen.findByRole("heading", {
+        name: /apply for flat a.*3 bedroom apartment in bosila garden city/i,
+      })
     ).toBeInTheDocument();
   });
 

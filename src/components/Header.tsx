@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useSession } from "../hooks/useSession";
 
 const BUSINESS_LINKS = [
   {
@@ -29,6 +30,8 @@ const BUSINESS_LINKS = [
 ];
 
 export function Header() {
+  const { session } = useSession();
+
   return (
     <header className="border-b border-stone-200 bg-white">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-4 md:flex-row md:justify-between md:gap-6">
@@ -60,12 +63,21 @@ export function Header() {
           <Link to="/contact" className="hover:text-accent-600">
             Contact
           </Link>
-          <Link
-            to="/login"
-            className="rounded-md border border-accent-600 px-3 py-1 text-accent-700 hover:bg-accent-50"
-          >
-            Login / Sign Up
-          </Link>
+          {session ? (
+            <Link
+              to="/admin"
+              className="rounded-md border border-accent-600 px-3 py-1 text-accent-700 hover:bg-accent-50"
+            >
+              Admin Panel
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              className="rounded-md border border-accent-600 px-3 py-1 text-accent-700 hover:bg-accent-50"
+            >
+              Login / Sign Up
+            </Link>
+          )}
         </nav>
       </div>
     </header>
