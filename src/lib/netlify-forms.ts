@@ -22,6 +22,25 @@ export async function submitTourRequest(fields: TourRequestFields): Promise<void
   }
 }
 
+export interface ContactMessageFields {
+  name: string;
+  email: string;
+  message: string;
+}
+
+export async function submitContactMessage(fields: ContactMessageFields): Promise<void> {
+  const body = new URLSearchParams({ "form-name": "contact-message", ...fields }).toString();
+  const response = await fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body,
+  });
+
+  if (!response.ok) {
+    throw new Error("Contact message submission failed");
+  }
+}
+
 export type ApplicationSubmission = { listingSlug: string } & ApplicationData;
 
 export async function submitApplication(submission: ApplicationSubmission): Promise<void> {

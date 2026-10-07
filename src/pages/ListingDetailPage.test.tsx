@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import ListingDetailPage from "./ListingDetailPage";
@@ -14,11 +13,6 @@ vi.mock("react-leaflet", () => ({
   TileLayer: () => <div data-testid="tile-layer" />,
   Marker: ({ children }: { children?: ReactNode }) => <div data-testid="marker">{children}</div>,
   Popup: ({ children }: { children: ReactNode }) => <div data-testid="popup">{children}</div>,
-}));
-
-vi.mock("../lib/netlify-forms", () => ({
-  submitTourRequest: vi.fn(),
-  submitApplication: vi.fn(),
 }));
 
 const { fakeTable } = vi.hoisted(() => ({ fakeTable: { from: vi.fn() } }));
@@ -43,7 +37,7 @@ function renderAt(path: string) {
 }
 
 describe("ListingDetailPage", () => {
-  it("renders listing details, amenities, map, and the apply link for a valid slug", async () => {
+  it("renders listing details, amenities, and map for a valid slug, with no Apply/Tour buttons", async () => {
     renderAt("/listings/bosila-garden-city-flat-a");
 
     expect(
@@ -52,32 +46,13 @@ describe("ListingDetailPage", () => {
     expect(screen.getAllByText("৳12,000/mo").length).toBeGreaterThan(0);
     expect(screen.getByText(/generator backup/i)).toBeInTheDocument();
     expect(screen.getByTestId("map-container")).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /apply now/i }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole("link", { name: /apply now/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /schedule tour/i })).not.toBeInTheDocument();
   });
 
   it("shows a not-found message for an unknown slug", async () => {
     renderAt("/listings/does-not-exist");
 
     expect(await screen.findByRole("heading", { name: /listing not found/i })).toBeInTheDocument();
-  });
-
-  it("opens the schedule tour modal from the desktop button", async () => {
-    const user = userEvent.setup();
-    renderAt("/listings/bosila-garden-city-flat-a");
-
-    // [0] is the desktop action row, [1] is the mobile sticky bar (rendered after it).
-    const buttons = await screen.findAllByRole("button", { name: /schedule tour/i });
-    expect(buttons).toHaveLength(2);
-    await user.click(buttons[0]);
-    expect(screen.getByText("Schedule a Tour")).toBeInTheDocument();
-  });
-
-  it("opens the schedule tour modal from the mobile sticky bar button", async () => {
-    const user = userEvent.setup();
-    renderAt("/listings/bosila-garden-city-flat-a");
-
-    const buttons = await screen.findAllByRole("button", { name: /schedule tour/i });
-    await user.click(buttons[1]);
-    expect(screen.getByText("Schedule a Tour")).toBeInTheDocument();
   });
 });

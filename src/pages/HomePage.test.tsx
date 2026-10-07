@@ -31,6 +31,6 @@ describe("HomePage", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /find a property/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /featured listings/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /why renters trust rent dhaka/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /why customers trust us/i })).toBeInTheDocument();
   });
 });

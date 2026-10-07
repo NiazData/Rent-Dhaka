@@ -1,18 +1,13 @@
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useListing } from "../hooks/useListing";
 import { formatBDT } from "../lib/format";
 import { PhotoGallery } from "../components/PhotoGallery";
-import { StickyApplyBar } from "../components/StickyApplyBar";
 import { NotFoundMessage } from "../components/NotFoundMessage";
 import { ListingsMapView } from "../components/ListingsMapView";
-import { ScheduleTourModal } from "../components/ScheduleTourModal";
-import { Button } from "../components/ui/button";
 
 export default function ListingDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { listing, loading } = useListing(slug);
-  const [tourModalOpen, setTourModalOpen] = useState(false);
 
   if (loading) {
     return <p role="status" className="mx-auto max-w-5xl px-4 py-8">Loading listing…</p>;
@@ -28,7 +23,7 @@ export default function ListingDetailPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 pb-24 md:pb-8">
+    <div className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="text-2xl font-bold text-stone-900">{listing.title}</h1>
       <p className="mt-1 text-stone-600">{listing.address}</p>
 
@@ -70,25 +65,6 @@ export default function ListingDetailPage() {
           <ListingsMapView listings={[listing]} />
         </div>
       </section>
-
-      <div className="mt-8 hidden gap-3 md:flex">
-        <Link
-          to={`/apply/${listing.slug}`}
-          className="rounded-md bg-accent-600 px-6 py-3 text-sm font-medium text-white"
-        >
-          Apply Now
-        </Link>
-        <Button variant="outline" size="lg" onClick={() => setTourModalOpen(true)}>
-          Schedule Tour
-        </Button>
-      </div>
-
-      <StickyApplyBar listingSlug={listing.slug} onScheduleTour={() => setTourModalOpen(true)} />
-      <ScheduleTourModal
-        listingSlug={listing.slug}
-        open={tourModalOpen}
-        onOpenChange={setTourModalOpen}
-      />
     </div>
   );
 }

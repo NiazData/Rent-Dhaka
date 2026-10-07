@@ -3,7 +3,7 @@ export function TrustSection() {
     <section aria-labelledby="trust-heading" className="bg-stone-50 px-4 py-12">
       <div className="mx-auto max-w-6xl text-center">
         <h2 id="trust-heading" className="text-2xl font-bold text-stone-900">
-          Why Renters Trust Rent Dhaka
+          Why Customers Trust Us
         </h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           <div>

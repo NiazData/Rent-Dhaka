@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { submitApplication, submitTourRequest, type ApplicationSubmission } from "./netlify-forms";
+import {
+  submitApplication,
+  submitContactMessage,
+  submitTourRequest,
+  type ApplicationSubmission,
+} from "./netlify-forms";
 
 describe("submitTourRequest", () => {
   beforeEach(() => {
@@ -40,6 +45,39 @@ describe("submitTourRequest", () => {
         message: "",
       })
     ).rejects.toThrow("Tour request submission failed");
+  });
+});
+
+describe("submitContactMessage", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("POSTs url-encoded form data including the form-name field", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await submitContactMessage({
+      name: "Rafiq Ahmed",
+      email: "rafiq@example.com",
+      message: "Is this apartment still available?",
+    });
+
+    expect(fetchMock).toHaveBeenCalledWith("/", expect.objectContaining({ method: "POST" }));
+    const body = fetchMock.mock.calls[0][1].body as string;
+    const params = new URLSearchParams(body);
+    expect(params.get("form-name")).toBe("contact-message");
+    expect(params.get("name")).toBe("Rafiq Ahmed");
+    expect(params.get("email")).toBe("rafiq@example.com");
+    expect(params.get("message")).toBe("Is this apartment still available?");
+  });
+
+  it("throws when the response is not ok", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
+
+    await expect(
+      submitContactMessage({ name: "Rafiq Ahmed", email: "rafiq@example.com", message: "Hi" })
+    ).rejects.toThrow("Contact message submission failed");
   });
 });
 

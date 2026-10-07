@@ -3,8 +3,7 @@ export default function PrivacyPolicyPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 text-stone-700">
       <h1 className="text-3xl font-bold text-stone-900">Privacy Policy</h1>
       <p className="mt-4">
-        Rent Dhaka collects only the information you choose to submit through our Schedule a Tour
-        and Rental Application forms: your name, contact details, employment information, and any
+        This site collects only the information you choose to submit through contact forms: your name, contact details, employment information, and any
         documents you upload. These submissions are processed by Netlify Forms, our form-handling
         provider, and are never stored in this website's own codebase or public database.
       </p>
@@ -12,13 +11,6 @@ export default function PrivacyPolicyPage() {
         We use this information solely to respond to tour requests and evaluate rental
         applications. We do not sell or share your information with third parties beyond what is
         necessary to process your request.
-      </p>
-      <p className="mt-4">
-        If you would like your submitted information removed, contact us at{" "}
-        <a href="mailto:hello@rentdhaka.com" className="text-accent-600 underline">
-          hello@rentdhaka.com
-        </a>
-        .
       </p>
     </div>
   );
