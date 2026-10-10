@@ -1,4 +1,4 @@
-# Architecture — Rent Dhaka
+# Architecture — Iman Homes
 
 ## Stack
 

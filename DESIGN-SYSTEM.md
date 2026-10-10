@@ -1,4 +1,4 @@
-# Design System — Rent Dhaka
+# Design System — Iman Homes
 
 ## Color tokens (`tailwind.config.js`)
 

@@ -1,10 +1,10 @@
-# Product Requirements Document — Rent Dhaka
+# Product Requirements Document — Iman Homes
 
 ## Product
 
-Rent Dhaka is a property marketplace for the Dhaka, Bangladesh rental and
+Iman Homes is a property marketplace for the Dhaka, Bangladesh rental and
 sale market, operated under a single umbrella ("Barakah") covering several
-related business lines. Live at https://rent-dhaka.netlify.app.
+related business lines. Live at https://imanhomes.com.
 
 ## Users
 

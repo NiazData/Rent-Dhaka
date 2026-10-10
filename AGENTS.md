@@ -1,4 +1,4 @@
-# AGENTS.md — Rent Dhaka
+# AGENTS.md — Iman Homes
 
 Instructions for any AI agent (or human) picking up this repo. Read
 this first, then the doc that matches what you're about to do:
@@ -42,7 +42,7 @@ git push origin master
 netlify deploy --prod --dir=dist
 ```
 
-Site: https://rent-dhaka.netlify.app · GitHub:
+Site: https://imanhomes.com (Netlify: https://rent-dhaka.netlify.app) · GitHub:
 https://github.com/NiazData/Rent-Dhaka
 
 ## Database changes

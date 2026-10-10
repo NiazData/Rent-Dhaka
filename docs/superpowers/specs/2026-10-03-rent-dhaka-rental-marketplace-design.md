@@ -1,4 +1,4 @@
-# Rent Dhaka — Rental Marketplace Website Design Spec
+# Iman Homes — Rental Marketplace Website Design Spec
 
 Date: 2026-10-03
 

@@ -1,4 +1,4 @@
-# Rules — Rent Dhaka
+# Rules — Iman Homes
 
 Working rules distilled from this project's history. Follow these
 without being re-told; they encode corrections the project owner has

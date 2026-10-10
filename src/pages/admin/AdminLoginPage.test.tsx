@@ -34,13 +34,13 @@ describe("AdminLoginPage", () => {
     const user = userEvent.setup();
     renderPage();
 
-    await user.type(screen.getByLabelText(/email/i), "owner@rentdhaka.com");
+    await user.type(screen.getByLabelText(/email/i), "owner@imanhomes.com");
     await user.type(screen.getByLabelText(/password/i), "correct-password");
     await user.click(screen.getByRole("button", { name: /sign in/i }));
 
     expect(await screen.findByText("Admin Dashboard")).toBeInTheDocument();
     expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
-      email: "owner@rentdhaka.com",
+      email: "owner@imanhomes.com",
       password: "correct-password",
     });
   });
@@ -54,7 +54,7 @@ describe("AdminLoginPage", () => {
     const user = userEvent.setup();
     renderPage();
 
-    await user.type(screen.getByLabelText(/email/i), "owner@rentdhaka.com");
+    await user.type(screen.getByLabelText(/email/i), "owner@imanhomes.com");
     await user.type(screen.getByLabelText(/password/i), "wrong-password");
     await user.click(screen.getByRole("button", { name: /sign in/i }));
 

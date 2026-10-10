@@ -1,4 +1,4 @@
-# Rent Dhaka Rental Marketplace Implementation Plan
+# Iman Homes Rental Marketplace Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -208,7 +208,7 @@ Create `index.html`:
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rent Dhaka — Find Your Next Home</title>
+    <title>Iman Homes — Find Your Next Home</title>
   </head>
   <body>
     <div id="root"></div>
@@ -262,7 +262,7 @@ Create `src/App.tsx`:
 
 ```tsx
 function App() {
-  return <div>Rent Dhaka</div>;
+  return <div>Iman Homes</div>;
 }
 
 export default App;
@@ -530,7 +530,7 @@ export function Header() {
     <header className="border-b border-stone-200 bg-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <Link to="/" className="text-lg font-bold text-accent-700">
-          Rent Dhaka
+          Iman Homes
         </Link>
         <nav aria-label="Main" className="flex gap-6 text-sm font-medium text-stone-700">
           <Link to="/" className="hover:text-accent-600">
@@ -561,7 +561,7 @@ export function Footer() {
   return (
     <footer className="border-t border-stone-200 bg-stone-50">
       <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-stone-600">
-        <p className="font-semibold text-stone-900">Rent Dhaka</p>
+        <p className="font-semibold text-stone-900">Iman Homes</p>
         <p className="mt-1">Helping renters find verified homes across Dhaka.</p>
         <nav aria-label="Footer" className="mt-4 flex gap-4">
           <Link to="/privacy" className="hover:text-accent-600">
@@ -1260,7 +1260,7 @@ export const teamMembers: TeamMember[] = [
     name: "Shahriar Kabir",
     role: "Founder & Managing Director",
     photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
-    bio: "Over 12 years in Dhaka's rental market, Shahriar founded Rent Dhaka to make renting transparent and stress-free.",
+    bio: "Over 12 years in Dhaka's rental market, Shahriar founded Iman Homes to make renting transparent and stress-free.",
   },
   {
     id: "m2",
@@ -2026,7 +2026,7 @@ export function TrustSection() {
     <section aria-labelledby="trust-heading" className="bg-stone-50 px-4 py-12">
       <div className="mx-auto max-w-6xl text-center">
         <h2 id="trust-heading" className="text-2xl font-bold text-stone-900">
-          Why Renters Trust Rent Dhaka
+          Why Renters Trust Iman Homes
         </h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           <div>
@@ -3741,7 +3741,7 @@ Modify `index.html`:
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rent Dhaka — Find Your Next Home</title>
+    <title>Iman Homes — Find Your Next Home</title>
   </head>
   <body>
     <div id="root"></div>
@@ -5081,9 +5081,9 @@ import { TestimonialsList } from "../components/TestimonialsList";
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="text-3xl font-bold text-stone-900">About Rent Dhaka</h1>
+      <h1 className="text-3xl font-bold text-stone-900">About Iman Homes</h1>
       <p className="mt-3 max-w-2xl text-stone-600">
-        Rent Dhaka has helped renters find verified homes across Dhaka for over 8 years, working
+        Iman Homes has helped renters find verified homes across Dhaka for over 8 years, working
         directly with landlords in Gulshan, Dhanmondi, Banani, Uttara, and beyond to keep listings
         accurate and leases straightforward.
       </p>
@@ -5109,7 +5109,7 @@ export default function AboutPage() {
 - [ ] **Step 12: Run the full test suite to verify everything passes**
 
 Run: `npx vitest run`
-Expected: PASS — all tests from Tasks 1-14 pass. The Task 3 `AppRoutes` test for `/about` still matches, since "About Rent Dhaka" contains "about".
+Expected: PASS — all tests from Tasks 1-14 pass. The Task 3 `AppRoutes` test for `/about` still matches, since "About Iman Homes" contains "about".
 
 - [ ] **Step 13: Commit**
 
@@ -5183,7 +5183,7 @@ export function OfficeMap() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <Marker position={OFFICE_POSITION}>
-        <Popup>Rent Dhaka Office — House 14, Road 103, Gulshan 2</Popup>
+        <Popup>Iman Homes Office — House 14, Road 103, Gulshan 2</Popup>
       </Marker>
     </MapContainer>
   );
@@ -5350,7 +5350,7 @@ export default function PrivacyPolicyPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 text-stone-700">
       <h1 className="text-3xl font-bold text-stone-900">Privacy Policy</h1>
       <p className="mt-4">
-        Rent Dhaka collects only the information you choose to submit through our Schedule a Tour
+        Iman Homes collects only the information you choose to submit through our Schedule a Tour
         and Rental Application forms: your name, contact details, employment information, and any
         documents you upload. These submissions are processed by Netlify Forms, our form-handling
         provider, and are never stored in this website's own codebase or public database.

@@ -1,4 +1,4 @@
-# Memory — Rent Dhaka
+# Memory — Iman Homes
 
 A decision log: what changed and **why**, so a future agent doesn't
 undo a deliberate choice by mistake. Not a changelog of every edit —

@@ -10,7 +10,7 @@ export function OfficeMap() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <Marker position={OFFICE_POSITION}>
-        <Popup>Rent Dhaka Office — Road 4, Mohammadpur</Popup>
+        <Popup>Iman Homes Office — Road 4, Mohammadpur</Popup>
       </Marker>
     </MapContainer>
   );

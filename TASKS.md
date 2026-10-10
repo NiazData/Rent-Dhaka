@@ -1,4 +1,4 @@
-# Tasks — Rent Dhaka
+# Tasks — Iman Homes
 
 Status as of 2026-10-05. Update this file when scope changes — it's a
 snapshot, not a ticket system.
