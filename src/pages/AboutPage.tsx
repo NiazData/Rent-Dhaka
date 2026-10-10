@@ -5,9 +5,13 @@ export default function AboutPage() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="text-3xl font-bold text-stone-900">About This Company</h1>
       <p className="mt-3 max-w-2xl text-stone-600">
-        The Company has helped find verified homes across Dhaka for over 10 years, working
-        directly with landlords in Gulshan, Dhanmondi, Banani, Uttara, Mohammadpur, and beyond to
-        keep listings accurate and leases straightforward.
+        Iman Homes was founded in 2014 on a simple belief: 
+        that a home is more than a structure — it is the foundation of a life. 
+        From our very first project, we committed to building with materials that last, designs that inspire, and a process that respects the trust our clients place in us. Over the past decade, we have successfully completed four landmark projects — 12, 10, 9, and 6-storey buildings spread across Bangladesh — delivering 100+ apartments directly into the hands of our customers. We don't just hand over a unit; we wait for every client to arrive and personally place the keys in their hands. We also work closely with landowners who want to develop their property. Bring us your land and your vision — we bring the manpower, expertise, and commitment to build exactly what you have in mind. No tension, no shortcuts. Just results.
+
+        "Your land, our manpower, work together."
+
+        Whether you're building, buying, or selling — bring us your land, your vision, or your property. We'll take it from there.
       </p>
 
       <div className="mt-6 max-w-md">
